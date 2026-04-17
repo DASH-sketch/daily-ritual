@@ -6,7 +6,6 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Daily Ritual">
 <meta name="theme-color" content="#2d4a3e">
 <title>Daily Ritual</title>
 <style>
@@ -14,129 +13,116 @@
 html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none}
 body{background:#faf6f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1e1408}
 #app{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden}
+/* Header */
 .hdr{background:#2d4a3e;padding:22px 16px 14px;flex-shrink:0;width:100%}
 .hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.hdr-nav{width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;background:rgba(255,255,255,.15);color:white;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:inherit}
+.hdr-nav:disabled{background:transparent;color:transparent;cursor:default}
 .hdr-center{text-align:center;flex:1}
 .hdr-date{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#86b89a}
 .hdr-title{font-size:20px;font-weight:700;color:white;font-family:Georgia,serif;line-height:1.2}
 .hdr-btns{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:3px}
-.hdr-nav{width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;background:rgba(255,255,255,.15);color:white;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hdr-nav:disabled{background:transparent;color:transparent;cursor:default}
+.today-btn{font-size:10px;color:#e07b5a;border:none;background:none;cursor:pointer;font-family:inherit}
+.pick-lbl{cursor:pointer;position:relative;display:inline-flex}
+.pick-lbl span{font-size:11px;color:#86b89a;background:rgba(255,255,255,.12);border-radius:8px;padding:3px 9px}
+.pick-lbl input{position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer}
 .prog-bar{display:flex;gap:5px;margin-top:4px}
-.prog-seg{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.18);transition:background .4s}
+.prog-seg{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.18)}
 .prog-seg.done{background:#e07b5a}
 .hdr-sub{font-size:11px;color:#86b89a;margin-top:5px;text-align:center}
-.pick-btn{font-size:11px;color:#86b89a;background:rgba(255,255,255,.12);border-radius:8px;padding:3px 9px;cursor:pointer;position:relative;display:inline-flex;border:none}
-.pick-btn input[type=date]{position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer}
-.today-btn{font-size:10px;color:#e07b5a;border:none;background:none;cursor:pointer}
+/* Content */
 .content{flex:1;overflow-y:auto;overflow-x:hidden;width:100%;min-height:0}
-.tab-panel{width:100%;display:none}
+.tab-panel{width:100%;display:none;padding:16px}
 .tab-panel.active{display:block}
-.pad{padding:16px;width:100%}
+/* Nav bar */
 .nav-bar{display:flex;border-top:1px solid #e8e0d4;background:white;flex-shrink:0;width:100%}
 .nav-btn{flex:1;padding:11px 0 9px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#9ca3af;font-family:inherit}
 .nav-btn.active{color:#2d4a3e}
-.nav-icon{font-size:21px}
-.nav-label{font-size:11px;font-weight:400}
-.nav-btn.active .nav-label{font-weight:600}
-/* Section tabs */
+.nav-icon{font-size:21px;line-height:1}
+.nav-lbl{font-size:11px;font-weight:400}
+.nav-btn.active .nav-lbl{font-weight:600}
+/* Sections */
 .sec-tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}
 .sec-tabs::-webkit-scrollbar{display:none}
 .sec-tab{flex-shrink:0;padding:7px 12px;border-radius:20px;border:none;background:#ede9e3;color:#8a7968;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit}
 .sec-tab.active{background:#2d4a3e;color:white}
-/* Cards */
-.card{background:white;border-radius:24px;padding:20px;box-shadow:0 2px 16px rgba(45,74,62,.08);border:1px solid #e8e0d4;min-height:300px}
-.streak-card{background:white;border-radius:20px;padding:16px;margin-bottom:12px;border:1px solid #e8e0d4}
-.chart-card{background:white;border-radius:20px;padding:16px;margin-bottom:12px;border:1px solid #e8e0d4}
-/* Form elements */
+.card{background:white;border-radius:24px;padding:20px;box-shadow:0 2px 16px rgba(45,74,62,.08);border:1px solid #e8e0d4;min-height:300px;width:100%}
+.bot-btns{display:flex;gap:10px;margin-top:14px;width:100%}
+/* Form */
 .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a7968;margin-bottom:5px}
 .inp{width:100%;padding:9px 12px;border-radius:12px;border:1px solid #e8e0d4;background:#faf6f0;color:#1e1408;font-size:14px;outline:none;font-family:inherit}
-.inp:focus{border-color:#6aaa8a}
 .txa{width:100%;padding:9px 12px;border-radius:12px;border:1px solid #e8e0d4;background:#faf6f0;color:#1e1408;font-size:14px;outline:none;resize:none;font-family:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
 .chip{padding:6px 12px;border-radius:20px;border:none;background:#ede9e3;color:#8a7968;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0;font-family:inherit}
 .chip.on{background:#2d4a3e;color:white}
-.chips{display:flex;flex-wrap:wrap;gap:7px}
 .sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:20px;font-size:18px;font-weight:600;color:#1e1408;font-family:Georgia,serif}
+/* Buttons */
+.btn{padding:14px;border-radius:16px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;flex:1}
+.btn-back{background:white;color:#8a7968;border:1px solid #e8e0d4}
+.btn-next{background:#2d4a3e;color:white}
+.btn-save{background:#6aaa8a;color:white}
+.btn-save.dirty{background:#e07b5a}
 /* Skin */
-.step-btn{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:13px;border:2px solid #e8e0d4;background:white;color:#8a7968;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;width:100%}
-.step-btn.on{border-color:#2d4a3e;background:#f0f7f2;color:#2d4a3e}
-.skin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
 .ampm-toggle{display:flex;background:#ede9e3;border-radius:16px;padding:4px;margin-bottom:18px;gap:4px}
 .ampm-btn{flex:1;padding:9px 0;border-radius:13px;border:none;cursor:pointer;background:transparent;color:#8a7968;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
 .ampm-btn.on{background:#2d4a3e;color:white}
-.ampm-badge{background:#6aaa8a;color:white;font-size:10px;border-radius:8px;padding:1px 6px}
-.ampm-badge.active{background:rgba(255,255,255,.3)}
+.skin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.step-btn{display:flex;align-items:center;gap:7px;padding:10px 12px;border-radius:13px;border:2px solid #e8e0d4;background:white;color:#8a7968;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;width:100%}
+.step-btn.on{border-color:#2d4a3e;background:#f0f7f2;color:#2d4a3e}
 /* Gym */
 .gym-block{background:#faf6f0;border-radius:16px;padding:14px;margin-bottom:12px;border:1px solid #e8e0d4}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 /* Speak */
-.speak-wrap{text-align:center;padding:40px 0}
-.speak-btn{width:140px;height:140px;border-radius:50%;border:4px solid #e8e0d4;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:52px;color:#8a7968;margin:0 auto;transition:all .25s}
-.speak-btn.done{border-color:#2d4a3e;background:#2d4a3e;color:white;box-shadow:0 0 0 10px #f0f7f2}
+.speak-btn{width:140px;height:140px;border-radius:50%;border:4px solid #e8e0d4;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:52px;color:#8a7968;margin:0 auto;transition:all .25s;font-family:inherit}
+.speak-btn.on{border-color:#2d4a3e;background:#2d4a3e;color:white;box-shadow:0 0 0 10px #f0f7f2}
 /* Todos */
-.todo-item{background:white;border-radius:16px;border:1.5px solid #e8e0d4;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.todo-item{background:white;border-radius:16px;border:1.5px solid #e8e0d4;margin-bottom:10px;overflow:hidden}
 .todo-item.done{border-color:#6aaa8a}
 .todo-row{display:flex;align-items:center;gap:10px;padding:13px 14px}
-.todo-check{width:22px;height:22px;border-radius:50%;border:2px solid #e8e0d4;background:white;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:white}
-.todo-check.done{background:#2d4a3e;border-color:#2d4a3e}
-.todo-text{flex:1;font-size:14px;line-height:1.4}
-.todo-text.done{color:#8a7968;text-decoration:line-through}
-.todo-exp{font-size:11px;color:#8a7968;border:none;background:none;cursor:pointer;padding:0 4px;flex-shrink:0;font-family:inherit}
-.todo-del{font-size:16px;color:#ef4444;border:none;background:none;cursor:pointer;flex-shrink:0}
+.chk{border-radius:50%;border:2px solid #e8e0d4;background:white;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:white;font-family:inherit}
+.chk.on{background:#2d4a3e;border-color:#2d4a3e}
+.sub-chk{border-radius:4px;border:2px solid #e8e0d4;background:white;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:white;font-family:inherit}
+.sub-chk.on{background:#6aaa8a;border-color:#6aaa8a}
+.del-btn{font-size:16px;color:#ef4444;border:none;background:none;cursor:pointer;flex-shrink:0;font-family:inherit}
+.exp-btn{font-size:11px;color:#8a7968;border:none;background:none;cursor:pointer;padding:0 4px;flex-shrink:0;font-family:inherit}
 .todo-subs{border-top:1px solid #e8e0d4;padding:10px 14px 14px;background:#faf6f0}
 .sub-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;padding-left:8px}
-.sub-line{width:14px;border-top:1.5px dashed #e8e0d4;flex-shrink:0}
-.sub-check{width:17px;height:17px;border-radius:4px;border:2px solid #e8e0d4;background:white;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:white}
-.sub-check.done{background:#6aaa8a;border-color:#6aaa8a}
-.sub-text{flex:1;font-size:13px}
-.sub-text.done{color:#8a7968;text-decoration:line-through}
-/* Breakout */
-.brk-btn{flex:1;padding:11px;border-radius:14px;font-size:13px;font-weight:500;cursor:pointer;border:2px solid #e8e0d4;background:white;color:#8a7968;font-family:inherit}
-.brk-btn.yes.on{border-color:#ef4444;background:#fef2f2;color:#b91c1c}
-.brk-btn.no.on{border-color:#2d4a3e;background:#f0f7f2;color:#2d4a3e}
-/* Nav buttons */
-.bot-btns{display:flex;gap:10px;margin-top:14px}
-.btn-back{flex:1;padding:14px;border-radius:16px;border:1px solid #e8e0d4;background:white;color:#8a7968;font-size:14px;cursor:pointer;font-family:inherit}
-.btn-next{flex:1;padding:14px;border-radius:16px;border:none;background:#2d4a3e;color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
-.btn-save{flex:1;padding:14px;border-radius:16px;border:none;background:#6aaa8a;color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
-.btn-save.dirty{background:#e07b5a}
-/* Add input row */
 .add-row{display:flex;gap:8px;margin-top:4px}
 .add-inp{flex:1;padding:11px 14px;border-radius:14px;border:1px dashed #e8e0d4;background:#faf6f0;color:#1e1408;font-size:14px;outline:none;font-family:inherit}
-.add-btn{padding:11px 18px;border-radius:14px;border:none;background:#2d4a3e;color:white;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit}
+.add-btn-g{padding:11px 18px;border-radius:14px;border:none;background:#2d4a3e;color:white;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit}
+/* Streaks */
+.streak-card{background:white;border-radius:20px;padding:16px;margin-bottom:12px;border:1px solid #e8e0d4;width:100%}
 /* Insights */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;width:100%}
 .stat-card{background:white;border-radius:16px;padding:12px;text-align:center;border:1px solid #e8e0d4}
-.stat-val{font-size:24px;font-weight:700;color:#2d4a3e}
-.stat-lbl{font-size:10px;color:#8a7968;margin-top:3px}
-/* AI */
-.ai-card{background:linear-gradient(135deg,#2d4a3e,#3d6b58);border-radius:20px;padding:20px;margin-top:12px;color:white}
-.ai-title{font-size:15px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.ai-sub{font-size:12px;opacity:.75;margin-bottom:16px;line-height:1.5}
-.ai-btn{width:100%;padding:13px;border-radius:14px;border:none;background:rgba(255,255,255,.15);color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s}
+.chart-card{background:white;border-radius:20px;padding:16px;margin-bottom:12px;border:1px solid #e8e0d4;width:100%}
+/* AI card */
+.ai-card{background:linear-gradient(135deg,#2d4a3e,#3d6b58);border-radius:20px;padding:20px;margin-top:12px;color:white;width:100%}
+.ai-btn{width:100%;padding:13px;border-radius:14px;border:none;background:rgba(255,255,255,.15);color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
 .ai-btn:disabled{opacity:.5;cursor:default}
-.ai-result{margin-top:16px;font-size:13px;line-height:1.7;opacity:.95;white-space:pre-wrap}
-.ai-loading{display:flex;align-items:center;gap:8px;font-size:13px;opacity:.8;margin-top:16px}
-.ai-dot{width:6px;height:6px;border-radius:50%;background:white;animation:blink 1.2s infinite}
-.ai-dot:nth-child(2){animation-delay:.2s}
-.ai-dot:nth-child(3){animation-delay:.4s}
-@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
-.ai-key-row{display:flex;gap:8px;margin-bottom:14px}
+.ai-result{margin-top:16px;font-size:13px;line-height:1.7;white-space:pre-wrap}
+.ai-key-row{display:flex;gap:8px;margin-bottom:10px}
 .ai-key-inp{flex:1;padding:9px 12px;border-radius:12px;border:none;background:rgba(255,255,255,.15);color:white;font-size:13px;outline:none;font-family:inherit}
 .ai-key-inp::placeholder{color:rgba(255,255,255,.5)}
 .ai-key-save{padding:9px 14px;border-radius:12px;border:none;background:rgba(255,255,255,.2);color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
-/* Rem */
-.rem-row{background:white;border-radius:18px;padding:14px 16px;margin-bottom:10px;border:1px solid #e8e0d4;display:flex;align-items:center;gap:12px}
-.toggle{width:46px;height:26px;border-radius:13px;border:none;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
-.toggle-knob{width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.dot{width:6px;height:6px;border-radius:50%;background:white;display:inline-block;animation:blink 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+/* Reminders */
+.rem-card{background:white;border-radius:18px;padding:14px 16px;margin-bottom:10px;border:1px solid #e8e0d4;display:flex;align-items:center;gap:12px;width:100%}
+.tog{width:46px;height:26px;border-radius:13px;border:none;cursor:pointer;position:relative;flex-shrink:0}
+.tog-k{width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+/* Data box */
+.data-box{background:#f0f7f2;border-radius:16px;padding:16px;margin-top:10px;width:100%}
+.drive-box{background:linear-gradient(135deg,#e8f5e9,#f0f7f2);border-radius:16px;padding:16px;margin-top:10px;width:100%;border:1px solid #c8e6c9}
+.warn-box{background:#fef9c3;border:1px solid #fde68a;border-radius:14px;padding:14px;margin-top:10px;width:100%}
 /* Toast */
-#toast{position:fixed;top:115px;left:50%;transform:translateX(-50%);background:#2d4a3e;color:white;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:500;z-index:999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);display:none}
-/* Restless */
-.rest-dots{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
-.rest-dot{width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0}
-/* Info box */
-.info-box{background:#f0f7f2;border-radius:14px;padding:12px;margin-bottom:16px;font-size:12px;color:#8a7968;line-height:1.6}
-.data-box{background:#f0f7f2;border-radius:16px;padding:16px;margin-top:8px}
+#toast{position:fixed;top:115px;left:50%;transform:translateX(-50%);background:#2d4a3e;color:white;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:500;z-index:999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);display:none;pointer-events:none}
+/* Breakout */
+.brk-btn{flex:1;padding:11px;border-radius:14px;font-size:13px;font-weight:500;cursor:pointer;border:2px solid #e8e0d4;background:white;color:#8a7968;font-family:inherit}
+.brk-no.on{border-color:#2d4a3e;background:#f0f7f2;color:#2d4a3e}
+.brk-yes.on{border-color:#ef4444;background:#fef2f2;color:#b91c1c}
 </style>
 </head>
 <body>
@@ -149,7 +135,7 @@ body{background:#faf6f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
         <div class="hdr-title">Daily Ritual</div>
         <div class="hdr-btns">
           <button class="today-btn" id="todayBtn" style="display:none">→ Today</button>
-          <label class="pick-btn">📅 Pick date<input type="date" id="datePicker"></label>
+          <label class="pick-lbl"><span>📅 Pick date</span><input type="date" id="datePicker"></label>
         </div>
       </div>
       <button class="hdr-nav" id="navNext">&#8250;</button>
@@ -157,918 +143,782 @@ body{background:#faf6f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
     <div class="prog-bar" id="progBar"></div>
     <div class="hdr-sub" id="hdrSub"></div>
   </div>
-
   <div id="toast"></div>
-
   <div class="content">
-    <!-- LOG TAB -->
-    <div class="tab-panel active pad" id="panel-log">
+    <div class="tab-panel active" id="panel-log">
       <div class="sec-tabs" id="secTabs"></div>
       <div class="card" id="secCard"></div>
       <div class="bot-btns" id="botBtns"></div>
     </div>
-    <!-- STREAKS TAB -->
-    <div class="tab-panel pad" id="panel-streaks">
-      <div id="streaksContent"></div>
-    </div>
-    <!-- INSIGHTS TAB -->
-    <div class="tab-panel pad" id="panel-insights">
-      <div id="insightsContent"></div>
-    </div>
-    <!-- ALERTS TAB -->
-    <div class="tab-panel pad" id="panel-reminders">
-      <div id="remindersContent"></div>
-    </div>
+    <div class="tab-panel" id="panel-streaks"><div id="streaksInner"></div></div>
+    <div class="tab-panel" id="panel-insights"><div id="insightsInner"></div></div>
+    <div class="tab-panel" id="panel-alerts"><div id="alertsInner"></div></div>
   </div>
-
   <div class="nav-bar">
-    <button class="nav-btn active" data-tab="log"><span class="nav-icon">📓</span><span class="nav-label">Log</span></button>
-    <button class="nav-btn" data-tab="streaks"><span class="nav-icon">🔥</span><span class="nav-label">Streaks</span></button>
-    <button class="nav-btn" data-tab="insights"><span class="nav-icon">📊</span><span class="nav-label">Insights</span></button>
-    <button class="nav-btn" data-tab="reminders"><span class="nav-icon">🔔</span><span class="nav-label">Alerts</span></button>
+    <button class="nav-btn active" data-tab="log"><span class="nav-icon">📓</span><span class="nav-lbl">Log</span></button>
+    <button class="nav-btn" data-tab="streaks"><span class="nav-icon">🔥</span><span class="nav-lbl">Streaks</span></button>
+    <button class="nav-btn" data-tab="insights"><span class="nav-icon">📊</span><span class="nav-lbl">Insights</span></button>
+    <button class="nav-btn" data-tab="alerts"><span class="nav-icon">🔔</span><span class="nav-lbl">Alerts</span></button>
   </div>
 </div>
-
 <script>
-// ── Constants ─────────────────────────────────────────────────────────────────
-const C={green:'#2d4a3e',orange:'#e07b5a',mint:'#6aaa8a',muted:'#8a7968',tan:'#c9a96e',border:'#e8e0d4',light:'#f0f7f2'};
+// ─── Constants ────────────────────────────────────────────────────────────────
+const GR='#2d4a3e',OR='#e07b5a',MI='#6aaa8a',MU='#8a7968',TA='#c9a96e',BO='#e8e0d4',LI='#f0f7f2';
 const MUSCLE=['Chest','Back','Legs','Shoulders','Arms','Core','Full Body','Cardio'];
-const MED_M=['Breathing','Body Scan','Visualization','Mantra','Open Awareness','Guided'];
+const MED_METHODS=['Breathing','Body Scan','Visualization','Mantra','Open Awareness','Guided'];
 const RLBL=['','Perfectly still','Very calm','Mostly calm','Light thoughts','Some thoughts','Wandering mind','Often distracted','Restless','Very restless',"Couldn't focus"];
 const HABITS=[
-  {key:'meditation',label:'Meditation',icon:'🧘',check:e=>parseFloat(e?.meditation?.time)>0},
-  {key:'read',label:'Reading',icon:'📚',check:e=>(e?.read?.notes||e?.read?.title||'').trim().length>3},
-  {key:'skin',label:'Skin Care',icon:'✨',check:e=>{const s=e?.skin;if(!s)return false;const ck=sl=>sl&&(['moisturiser','cleanse','sunscreen','exfoliate'].some(k=>sl[k])||(sl._custom||[]).some(c=>sl[c.key]));return ck(s.am)||ck(s.pm);}},
-  {key:'gym',label:'Gym',icon:'💪',check:e=>e?.gym?.some(g=>g.exercise?.trim())},
-  {key:'speak',label:'Speaking',icon:'🗣️',check:e=>e?.speak===true}
+  {key:'meditation',label:'Meditation',icon:'🧘',check:e=>parseFloat(e&&e.meditation&&e.meditation.time)>0},
+  {key:'read',label:'Reading',icon:'📚',check:e=>((e&&e.read&&(e.read.notes||e.read.title))||'').trim().length>3},
+  {key:'skin',label:'Skin Care',icon:'✨',check:function(e){
+    if(!e||!e.skin)return false;
+    function ck(sl){return sl&&(['moisturiser','cleanse','sunscreen','exfoliate'].some(function(k){return sl[k];})||(sl._custom||[]).some(function(c){return sl[c.key];}));}
+    return ck(e.skin.am)||ck(e.skin.pm);
+  }},
+  {key:'gym',label:'Gym',icon:'💪',check:e=>e&&e.gym&&e.gym.some(function(g){return g.exercise&&g.exercise.trim();})},
+  {key:'speak',label:'Speaking',icon:'🗣️',check:e=>e&&e.speak===true}
 ];
-const SECTIONS=['Meditation','Reading','Skin Care','Gym','Speaking','To-Dos'];
-const SEC_ICONS=['🧘','📚','✨','💪','🗣️','✅'];
-const REMS=[{key:'meditation',label:'Meditation',icon:'🧘'},{key:'read',label:'Reading',icon:'📚'},
-            {key:'skin',label:'Skin Care',icon:'✨'},{key:'gym',label:'Gym',icon:'💪'},
-            {key:'speak',label:'Speaking',icon:'🗣️'},{key:'todos',label:'To-Dos',icon:'✅'}];
+const REMS=[
+  {key:'meditation',label:'Meditation',icon:'🧘'},{key:'read',label:'Reading',icon:'📚'},
+  {key:'skin',label:'Skin Care',icon:'✨'},{key:'gym',label:'Gym',icon:'💪'},
+  {key:'speak',label:'Speaking',icon:'🗣️'},{key:'todos',label:'To-Dos',icon:'✅'}
+];
 
-// ── State ─────────────────────────────────────────────────────────────────────
-const toDS=d=>d.toISOString().slice(0,10);
-const TODAY=toDS(new Date());
-const daysAgo=n=>{const d=new Date();d.setDate(d.getDate()-n);return toDS(d);};
-const uid=()=>Math.random().toString(36).slice(2,8);
-const fmtDate=s=>new Date(s+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-const shortD=s=>{const[,m,d]=s.split('-');return`${+m}/${+d}`;};
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function toDS(d){return d.toISOString().slice(0,10);}
+var TODAY=toDS(new Date());
+function daysAgo(n){var d=new Date();d.setDate(d.getDate()-n);return toDS(d);}
+function uid(){return Math.random().toString(36).slice(2,8);}
+function fmtDate(s){return new Date(s+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+function shortD(s){var p=s.split('-');return(+p[1])+'/'+(+p[2]);}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function ge(id){return document.getElementById(id);}
+function ce(tag,cls,html){var el=document.createElement(tag);if(cls)el.className=cls;if(html!==undefined)el.innerHTML=html;return el;}
 
-function newGym(){return{muscle:'',exercise:'',weight:'',reps:'',sets:'',note:''};}
-function newEntry(){return{
-  meditation:{time:'',method:'',laps:'',restlessness:0,note:''},
-  read:{title:'',notes:''},
-  skin:{am:{moisturiser:false,cleanse:false,sunscreen:false,_custom:[]},
-        pm:{moisturiser:false,cleanse:false,exfoliate:false,_custom:[]},breakout:null},
-  gym:[newGym()],speak:false,todos:[]
-};}
-
-let S={
-  selDate:TODAY,tab:'log',sec:0,
-  entry:newEntry(),dirty:false,
-  all:{},reminders:{},skinPeriod:{},
-  timers:[]
+// ─── LocalStorage ─────────────────────────────────────────────────────────────
+var ls={
+  get:function(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}},
+  set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 };
 
-// ── LocalStorage ──────────────────────────────────────────────────────────────
-const ls={
-  get:k=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}},
-  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+// ─── State ────────────────────────────────────────────────────────────────────
+function newGym(){return{muscle:'',exercise:'',weight:'',reps:'',sets:'',note:''};}
+function newEntry(){
+  return{
+    meditation:{time:'',method:'',laps:'',restlessness:0,note:''},
+    read:{title:'',notes:''},
+    skin:{
+      am:{moisturiser:false,cleanse:false,sunscreen:false,_custom:[]},
+      pm:{moisturiser:false,cleanse:false,exfoliate:false,_custom:[]},
+      breakout:null
+    },
+    gym:[newGym()],speak:false,todos:[]
+  };
+}
+
+var S={
+  selDate:TODAY, tab:'log', sec:0,
+  entry:newEntry(), dirty:false,
+  all:{}, reminders:{}, skinPeriod:{},
+  gToken:null, timers:[]
 };
 
 function loadAll(){
-  const dates=ls.get('ritual:index')||[];
-  const all={};
-  dates.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
+  var dates=ls.get('ritual:index')||[];
+  var all={};
+  dates.forEach(function(d){var e=ls.get('ritual:'+d);if(e)all[d]=e;});
   S.all=all;
   S.reminders=ls.get('ritual:reminders')||{};
-  if(all[TODAY])S.entry=all[TODAY];
+  if(all[TODAY])S.entry=JSON.parse(JSON.stringify(all[TODAY]));
 }
 
-function saveEntry(){
-  ls.set('ritual:'+S.selDate,S.entry);
-  const dates=ls.get('ritual:index')||[];
-  if(!dates.includes(S.selDate))ls.set('ritual:index',[...dates,S.selDate]);
-  S.all={...S.all,[S.selDate]:S.entry};
-  S.dirty=false;
-  showToast('Saved! 🌿');
-  renderHeader();renderProgBar();renderBotBtns();
+// ─── Toast ────────────────────────────────────────────────────────────────────
+var _toastTimer=null;
+function toast(msg){
+  var t=ge('toast');t.textContent=msg;t.style.display='block';
+  clearTimeout(_toastTimer);_toastTimer=setTimeout(function(){t.style.display='none';},2500);
 }
 
-// ── Toast ─────────────────────────────────────────────────────────────────────
-let toastTimer;
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.style.display='block';
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.style.display='none',2500);
-}
-
-// ── Streaks ───────────────────────────────────────────────────────────────────
+// ─── Streak calc ──────────────────────────────────────────────────────────────
 function calcStreak(key){
-  const h=HABITS.find(x=>x.key===key);if(!h)return 0;
-  let n=0;const td=S.all[TODAY]&&h.check(S.all[TODAY]);
-  for(let d=td?0:1;d<365;d++){const e=S.all[daysAgo(d)];if(!e||!h.check(e))break;n++;}
+  var h=null;for(var i=0;i<HABITS.length;i++){if(HABITS[i].key===key){h=HABITS[i];break;}}
+  if(!h)return 0;
+  var n=0;var td=S.all[TODAY]&&h.check(S.all[TODAY]);
+  for(var d=td?0:1;d<365;d++){var e=S.all[daysAgo(d)];if(!e||!h.check(e))break;n++;}
   return n;
 }
 
-// ── Header ────────────────────────────────────────────────────────────────────
+// ─── Header ───────────────────────────────────────────────────────────────────
 function renderHeader(){
-  const isToday=S.selDate===TODAY;
-  document.getElementById('hdrDate').textContent=fmtDate(S.selDate);
-  document.getElementById('navNext').disabled=isToday;
-  document.getElementById('todayBtn').style.display=isToday?'none':'inline';
-  document.getElementById('datePicker').value=S.selDate;
-  document.getElementById('datePicker').max=TODAY;
+  var isToday=S.selDate===TODAY;
+  ge('hdrDate').textContent=fmtDate(S.selDate);
+  ge('navNext').disabled=isToday;
+  ge('todayBtn').style.display=isToday?'none':'inline';
+  ge('datePicker').value=S.selDate;
+  ge('datePicker').max=TODAY;
 }
 function renderProgBar(){
-  const bar=document.getElementById('progBar');
-  bar.innerHTML=HABITS.map(h=>`<div class="prog-seg${S.all[S.selDate]&&h.check(S.all[S.selDate])?' done':''}"></div>`).join('');
-  const done=HABITS.filter(h=>S.all[S.selDate]&&h.check(S.all[S.selDate])).length;
-  document.getElementById('hdrSub').textContent=done+'/5 habits done';
+  var bar=ge('progBar');
+  bar.innerHTML=HABITS.map(function(h){
+    var done=S.all[S.selDate]&&h.check(S.all[S.selDate]);
+    return '<div class="prog-seg'+(done?' done':'')+'"></div>';
+  }).join('');
+  var done=HABITS.filter(function(h){return S.all[S.selDate]&&h.check(S.all[S.selDate]);}).length;
+  ge('hdrSub').textContent=done+'/5 habits done';
 }
 
-// ── Tab switching ─────────────────────────────────────────────────────────────
+// ─── Save ─────────────────────────────────────────────────────────────────────
+function saveEntry(){
+  ls.set('ritual:'+S.selDate,S.entry);
+  var dates=ls.get('ritual:index')||[];
+  if(dates.indexOf(S.selDate)<0)ls.set('ritual:index',dates.concat([S.selDate]));
+  S.all[S.selDate]=JSON.parse(JSON.stringify(S.entry));
+  S.dirty=false;
+  renderProgBar();renderBotBtns();toast('Saved! 🌿');
+}
+
+// ─── Tab switch ───────────────────────────────────────────────────────────────
 function switchTab(tab){
   S.tab=tab;
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+tab));
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.tab===tab);});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.toggle('active',p.id==='panel-'+tab);});
   if(tab==='streaks')renderStreaks();
   if(tab==='insights')renderInsights();
-  if(tab==='reminders')renderReminders();
+  if(tab==='alerts')renderAlerts();
 }
 
-// ── Log view ──────────────────────────────────────────────────────────────────
+// ─── Log tabs ─────────────────────────────────────────────────────────────────
+var SEC_TABS=['🧘 Meditation','📚 Reading','✨ Skin Care','💪 Gym','🗣️ Speaking','✅ To-Dos'];
+
 function renderSecTabs(){
-  const el=document.getElementById('secTabs');
-  el.innerHTML=SECTIONS.map((s,i)=>`<button class="sec-tab${S.sec===i?' active':''}" data-si="${i}">${SEC_ICONS[i]} ${s}</button>`).join('');
-  el.querySelectorAll('.sec-tab').forEach(b=>b.addEventListener('click',()=>{S.sec=+b.dataset.si;renderSection();renderBotBtns();}));
+  var el=ge('secTabs');
+  el.innerHTML=SEC_TABS.map(function(s,i){
+    return '<button class="sec-tab'+(S.sec===i?' active':'')+'" data-si="'+i+'">'+s+'</button>';
+  }).join('');
+  el.querySelectorAll('.sec-tab').forEach(function(b){
+    b.addEventListener('click',function(){S.sec=+b.dataset.si;renderSection();renderBotBtns();});
+  });
 }
+
 function renderBotBtns(){
-  const el=document.getElementById('botBtns');
-  let h='';
-  if(S.sec>0)h+=`<button class="btn-back" id="btnBack">← Back</button>`;
-  if(S.sec<5)h+=`<button class="btn-next" id="btnNext">Next →</button>`;
-  else h+=`<button class="btn-save${S.dirty?' dirty':''}" id="btnSave">${S.dirty?'💾 Save Day':'✓ Saved!'}</button>`;
-  el.innerHTML=h;
-  document.getElementById('btnBack')?.addEventListener('click',()=>{S.sec--;renderSecTabs();renderSection();renderBotBtns();});
-  document.getElementById('btnNext')?.addEventListener('click',()=>{S.sec++;renderSecTabs();renderSection();renderBotBtns();});
-  document.getElementById('btnSave')?.addEventListener('click',saveEntry);
+  var el=ge('botBtns');el.innerHTML='';
+  if(S.sec>0){var bb=ce('button','btn btn-back','← Back');bb.addEventListener('click',function(){S.sec--;renderSecTabs();renderSection();renderBotBtns();});el.appendChild(bb);}
+  if(S.sec<5){var bn=ce('button','btn btn-next','Next →');bn.addEventListener('click',function(){S.sec++;renderSecTabs();renderSection();renderBotBtns();});el.appendChild(bn);}
+  else{var bs=ce('button','btn btn-save'+(S.dirty?' dirty':''),S.dirty?'💾 Save Day':'✓ Saved!');bs.addEventListener('click',saveEntry);el.appendChild(bs);}
 }
+
+function markDirty(){S.dirty=true;renderBotBtns();}
 
 function renderSection(){
-  const card=document.getElementById('secCard');
-  if(S.sec===0)card.innerHTML=renderMed();
-  else if(S.sec===1)card.innerHTML=renderRead();
-  else if(S.sec===2)card.innerHTML=renderSkin();
-  else if(S.sec===3)card.innerHTML=renderGym();
-  else if(S.sec===4)card.innerHTML=renderSpeak();
-  else if(S.sec===5)card.innerHTML=renderTodos();
+  var card=ge('secCard');
+  if(S.sec===0)card.innerHTML=buildMed();
+  else if(S.sec===1)card.innerHTML=buildRead();
+  else if(S.sec===2)card.innerHTML=buildSkin();
+  else if(S.sec===3)card.innerHTML=buildGym();
+  else if(S.sec===4)card.innerHTML=buildSpeak();
+  else card.innerHTML=buildTodos();
   attachSection();
 }
 
-// ── MEDITATION ────────────────────────────────────────────────────────────────
-function renderMed(){
-  const m=S.entry.meditation;
-  const dots=[1,2,3,4,5,6,7,8,9,10].map(i=>{
-    let bg=i<=m.restlessness?(i<=3?C.mint:i<=6?C.tan:C.orange):'#e8e0d4';
-    return`<button class="rest-dot" data-rv="${i}" style="background:${bg}"></button>`;
+// ─── Build: Meditation ────────────────────────────────────────────────────────
+function buildMed(){
+  var m=S.entry.meditation;
+  var dots=[1,2,3,4,5,6,7,8,9,10].map(function(i){
+    var bg=m.restlessness>=i?(i<=3?MI:i<=6?TA:OR):'#e8e0d4';
+    return'<button style="width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;background:'+bg+'" data-rv="'+i+'"></button>';
   }).join('');
-  return`
-    <div class="sec-hdr">🧘 Meditation</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-      <div><div class="lbl">Duration (min)</div><input class="inp" type="number" id="medTime" value="${m.time}" placeholder="20"></div>
-      <div><div class="lbl">Laps / Rounds</div><input class="inp" type="number" id="medLaps" value="${m.laps}" placeholder="3"></div>
-    </div>
-    <div style="margin-bottom:16px">
-      <div class="lbl">Method</div>
-      <div class="chips">${MED_M.map(x=>`<button class="chip${m.method===x?' on':''}" data-mm="${x}">${x}</button>`).join('')}</div>
-    </div>
-    <div style="margin-bottom:16px">
-      <div class="lbl">Restlessness · 1 = calm, 10 = restless</div>
-      <div class="rest-dots">${dots}</div>
-      ${m.restlessness>0?`<div style="font-size:12px;color:${C.muted};margin-top:6px">${m.restlessness}/10 — ${RLBL[m.restlessness]}</div>`:''}
-    </div>
-    <div class="lbl">Note</div>
-    <textarea class="txa" id="medNote" rows="2" placeholder="How was your session?">${m.note}</textarea>`;
+  return '<div class="sec-hdr">🧘 Meditation</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">'+
+      '<div><div class="lbl">Duration (min)</div><input class="inp" type="number" id="mTime" value="'+esc(m.time)+'" placeholder="20"></div>'+
+      '<div><div class="lbl">Laps</div><input class="inp" type="number" id="mLaps" value="'+esc(m.laps)+'" placeholder="3"></div>'+
+    '</div>'+
+    '<div style="margin-bottom:16px"><div class="lbl">Method</div><div class="chips">'+
+      MED_METHODS.map(function(x){return'<button class="chip'+(m.method===x?' on':'')+'" data-mm="'+x+'">'+x+'</button>';}).join('')+
+    '</div></div>'+
+    '<div style="margin-bottom:16px"><div class="lbl">Restlessness · 1=calm 10=restless</div>'+
+      '<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px">'+dots+'</div>'+
+      (m.restlessness>0?'<div style="font-size:12px;color:'+MU+';margin-top:6px">'+m.restlessness+'/10 — '+RLBL[m.restlessness]+'</div>':'')+
+    '</div>'+
+    '<div class="lbl">Note</div><textarea class="txa" id="mNote" rows="2" placeholder="How was your session?">'+esc(m.note)+'</textarea>';
 }
 
-// ── READING ───────────────────────────────────────────────────────────────────
-function renderRead(){
-  const r=S.entry.read;
-  return`
-    <div class="sec-hdr">📚 Reading</div>
-    <div style="margin-bottom:14px">
-      <div class="lbl">What did you read?</div>
-      <input class="inp" id="readTitle" value="${esc(r.title)}" placeholder="Book title, article, author...">
-    </div>
-    <div class="lbl">Notes & key ideas</div>
-    <textarea class="txa" id="readNotes" rows="8" placeholder="Key insights, quotes, reflections...">${esc(r.notes)}</textarea>`;
+// ─── Build: Reading ───────────────────────────────────────────────────────────
+function buildRead(){
+  var r=S.entry.read;
+  return '<div class="sec-hdr">📚 Reading</div>'+
+    '<div style="margin-bottom:14px"><div class="lbl">What did you read?</div><input class="inp" id="rTitle" value="'+esc(r.title)+'" placeholder="Book, article, author..."></div>'+
+    '<div class="lbl">Notes & key ideas</div><textarea class="txa" id="rNotes" rows="8" placeholder="Insights, quotes, reflections...">'+esc(r.notes)+'</textarea>';
 }
 
-// ── SKIN ──────────────────────────────────────────────────────────────────────
-function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
-function renderSkinSlot(slotKey){
-  const slot=S.entry.skin[slotKey]||{};
-  const isAm=slotKey==='am';
-  const steps=isAm?
+// ─── Build: Skin ──────────────────────────────────────────────────────────────
+function buildSkinSlot(slotKey){
+  var slot=S.entry.skin[slotKey]||{_custom:[]};
+  var isAm=slotKey==='am';
+  var steps=isAm?
     [{key:'cleanse',label:'Cleanse',icon:'💧'},{key:'moisturiser',label:'Moisturise',icon:'🧴'},{key:'sunscreen',label:'Sunscreen',icon:'☀️'}]:
     [{key:'cleanse',label:'Cleanse',icon:'💧'},{key:'moisturiser',label:'Moisturise',icon:'🧴'},{key:'exfoliate',label:'Exfoliate',icon:'✨'}];
-  const custom=slot._custom||[];
-  let btns=steps.map(s=>`<button class="step-btn${slot[s.key]?' on':''}" data-slot="${slotKey}" data-sk="${s.key}"><span>${s.icon}</span>${s.label}</button>`).join('');
-  custom.forEach(s=>{btns+=`<div style="position:relative"><button class="step-btn${slot[s.key]?' on':''}" data-slot="${slotKey}" data-sk="${s.key}"><span>🌿</span>${esc(s.label)}</button><button class="todo-del" style="position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;background:#ef4444;border:2px solid white;color:white;font-size:11px;display:flex;align-items:center;justify-content:center" data-slot="${slotKey}" data-rk="${s.key}">×</button></div>`;});
-  return`<div class="skin-grid">${btns}</div>
-    <div style="display:flex;gap:7px">
-      <input class="inp" id="skinNewStep_${slotKey}" placeholder="Add step (e.g. Toner)..." style="font-size:12px;padding:8px 11px;border:1px dashed #e8e0d4">
-      <button style="padding:8px 14px;border-radius:11px;border:none;background:#2d4a3e;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" data-addstep="${slotKey}">+ Add</button>
-    </div>`;
-}
-function renderSkin(){
-  const period=S.skinPeriod[S.selDate]||'am';
-  const skin=S.entry.skin;
-  const amDone=(['cleanse','moisturiser','sunscreen'].filter(k=>(skin.am||{})[k]).length+(skin.am?._custom||[]).filter(c=>(skin.am||{})[c.key]).length);
-  const pmDone=(['cleanse','moisturiser','exfoliate'].filter(k=>(skin.pm||{})[k]).length+(skin.pm?._custom||[]).filter(c=>(skin.pm||{})[c.key]).length);
-  return`
-    <div class="sec-hdr">✨ Skin Care</div>
-    <div class="ampm-toggle">
-      <button class="ampm-btn${period==='am'?' on':''}" data-period="am">☀️ Morning${amDone>0?`<span class="ampm-badge${period==='am'?' active':''}">${amDone}</span>`:''}</button>
-      <button class="ampm-btn${period==='pm'?' on':''}" data-period="pm">🌙 Evening${pmDone>0?`<span class="ampm-badge${period==='pm'?' active':''}">${pmDone}</span>`:''}</button>
-    </div>
-    <div class="lbl">${period==='am'?'Morning':'Evening'} steps</div>
-    ${renderSkinSlot(period)}
-    <div style="margin-top:20px">
-      <div class="lbl">Breakout today?</div>
-      <div style="display:flex;gap:10px">
-        <button class="brk-btn no${skin.breakout===false?' on':''}" data-brk="false">😊 No</button>
-        <button class="brk-btn yes${skin.breakout===true?' on':''}" data-brk="true">😟 Yes</button>
-      </div>
-    </div>`;
+  var custom=slot._custom||[];
+  var btns=steps.map(function(s){
+    return'<button class="step-btn'+(slot[s.key]?' on':'')+'" data-slot="'+slotKey+'" data-sk="'+s.key+'"><span>'+s.icon+'</span>'+s.label+'</button>';
+  }).join('');
+  custom.forEach(function(s){
+    btns+='<div style="position:relative">'+
+      '<button class="step-btn'+(slot[s.key]?' on':'')+'" data-slot="'+slotKey+'" data-sk="'+s.key+'"><span>🌿</span>'+esc(s.label)+'</button>'+
+      '<button style="position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;background:#ef4444;border:2px solid white;color:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center" data-slot="'+slotKey+'" data-rk="'+s.key+'">×</button>'+
+    '</div>';
+  });
+  return '<div class="skin-grid">'+btns+'</div>'+
+    '<div style="display:flex;gap:7px">'+
+      '<input class="inp" id="sNew_'+slotKey+'" placeholder="Add step (e.g. Toner)..." style="font-size:12px;padding:8px 11px;border:1px dashed '+BO+'">'+
+      '<button style="padding:8px 14px;border-radius:11px;border:none;background:'+GR+';color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" data-addstep="'+slotKey+'">+ Add</button>'+
+    '</div>';
 }
 
-// ── GYM ───────────────────────────────────────────────────────────────────────
-function renderGym(){
-  const gym=S.entry.gym;
-  let h=`<div class="sec-hdr">💪 Gym</div>`;
-  gym.forEach((ex,i)=>{
-    h+=`<div class="gym-block">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div class="lbl">Exercise ${i+1}</div>
-        ${gym.length>1?`<button style="font-size:11px;color:#ef4444;border:none;background:none;cursor:pointer;font-family:inherit" data-remgym="${i}">Remove</button>`:''}
-      </div>
-      <div style="margin-bottom:10px">
-        <div class="lbl">Muscle Group</div>
-        <div class="chips">${MUSCLE.map(m=>`<button class="chip${ex.muscle===m?' on':''}" data-gi="${i}" data-gm="${m}">${m}</button>`).join('')}
-        </div>
-      </div>
-      <div style="margin-bottom:10px"><div class="lbl">Exercise Name</div><input class="inp" data-gi="${i}" data-gf="exercise" value="${esc(ex.exercise)}" placeholder="e.g. Bench Press"></div>
-      <div class="grid3" style="margin-bottom:10px">
-        <div><div class="lbl">Weight</div><input class="inp" type="number" data-gi="${i}" data-gf="weight" value="${ex.weight}" placeholder="kg"></div>
-        <div><div class="lbl">Reps</div><input class="inp" type="number" data-gi="${i}" data-gf="reps" value="${ex.reps}" placeholder="12"></div>
-        <div><div class="lbl">Sets</div><input class="inp" type="number" data-gi="${i}" data-gf="sets" value="${ex.sets}" placeholder="3"></div>
-      </div>
-      <div class="lbl">Note</div>
-      <input class="inp" data-gi="${i}" data-gf="note" value="${esc(ex.note)}" placeholder="Optional note">
-    </div>`;
+function buildSkin(){
+  var period=S.skinPeriod[S.selDate]||'am';
+  var skin=S.entry.skin;
+  var am=skin.am||{_custom:[]};var pm=skin.pm||{_custom:[]};
+  var ad=['cleanse','moisturiser','sunscreen'].filter(function(k){return am[k];}).length+(am._custom||[]).filter(function(c){return am[c.key];}).length;
+  var pd=['cleanse','moisturiser','exfoliate'].filter(function(k){return pm[k];}).length+(pm._custom||[]).filter(function(c){return pm[c.key];}).length;
+  return '<div class="sec-hdr">✨ Skin Care</div>'+
+    '<div class="ampm-toggle">'+
+      '<button class="ampm-btn'+(period==='am'?' on':'')+'" data-period="am">☀️ Morning'+(ad>0?'<span style="background:'+(period==='am'?'rgba(255,255,255,.3)':MI)+';color:white;font-size:10px;border-radius:8px;padding:1px 6px">'+ad+'</span>':'')+' </button>'+
+      '<button class="ampm-btn'+(period==='pm'?' on':'')+'" data-period="pm">🌙 Evening'+(pd>0?'<span style="background:'+(period==='pm'?'rgba(255,255,255,.3)':MI)+';color:white;font-size:10px;border-radius:8px;padding:1px 6px">'+pd+'</span>':'')+' </button>'+
+    '</div>'+
+    '<div class="lbl">'+(period==='am'?'Morning':'Evening')+' steps</div>'+
+    buildSkinSlot(period)+
+    '<div style="margin-top:20px"><div class="lbl">Breakout today?</div>'+
+    '<div style="display:flex;gap:10px">'+
+      '<button class="brk-btn brk-no'+(skin.breakout===false?' on':'')+'" data-brk="false">😊 No</button>'+
+      '<button class="brk-btn brk-yes'+(skin.breakout===true?' on':'')+'" data-brk="true">😟 Yes</button>'+
+    '</div></div>';
+}
+
+// ─── Build: Gym ───────────────────────────────────────────────────────────────
+function buildGym(){
+  var gym=S.entry.gym;
+  var h='<div class="sec-hdr">💪 Gym</div>';
+  gym.forEach(function(ex,i){
+    h+='<div class="gym-block">'+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'+
+        '<div class="lbl">Exercise '+(i+1)+'</div>'+
+        (gym.length>1?'<button style="font-size:11px;color:#ef4444;border:none;background:none;cursor:pointer;font-family:inherit" data-rg="'+i+'">Remove</button>':'')+
+      '</div>'+
+      '<div style="margin-bottom:10px"><div class="lbl">Muscle Group</div><div class="chips">'+
+        MUSCLE.map(function(m){return'<button class="chip'+(ex.muscle===m?' on':'')+'" data-gi="'+i+'" data-gm="'+m+'">'+m+'</button>';}).join('')+
+      '</div></div>'+
+      '<div style="margin-bottom:10px"><div class="lbl">Exercise Name</div><input class="inp" data-gi="'+i+'" data-gf="exercise" value="'+esc(ex.exercise)+'" placeholder="e.g. Bench Press"></div>'+
+      '<div class="grid3" style="margin-bottom:10px">'+
+        '<div><div class="lbl">Weight</div><input class="inp" type="number" data-gi="'+i+'" data-gf="weight" value="'+esc(ex.weight)+'" placeholder="kg"></div>'+
+        '<div><div class="lbl">Reps</div><input class="inp" type="number" data-gi="'+i+'" data-gf="reps" value="'+esc(ex.reps)+'" placeholder="12"></div>'+
+        '<div><div class="lbl">Sets</div><input class="inp" type="number" data-gi="'+i+'" data-gf="sets" value="'+esc(ex.sets)+'" placeholder="3"></div>'+
+      '</div>'+
+      '<div class="lbl">Note</div><input class="inp" data-gi="'+i+'" data-gf="note" value="'+esc(ex.note)+'" placeholder="Optional">'+
+    '</div>';
   });
-  h+=`<button style="width:100%;padding:13px;border:2px dashed #e8e0d4;border-radius:14px;background:transparent;color:#8a7968;font-size:13px;cursor:pointer;font-family:inherit" id="addGym">+ Add Exercise</button>`;
+  h+='<button style="width:100%;padding:13px;border:2px dashed '+BO+';border-radius:14px;background:transparent;color:'+MU+';font-size:13px;cursor:pointer;font-family:inherit" id="addGym">+ Add Exercise</button>';
   return h;
 }
 
-// ── SPEAKING ──────────────────────────────────────────────────────────────────
-function renderSpeak(){
-  const on=S.entry.speak;
-  return`<div style="text-align:center;padding-top:16px">
-    <div class="sec-hdr" style="justify-content:center">🗣️ Speaking Practice</div>
-    <div class="speak-wrap">
-      <button class="speak-btn${on?' done':''}" id="speakBtn">${on?'✓':'○'}</button>
-      <p style="margin-top:20px;color:${on?C.green:C.muted};font-size:15px;font-weight:500">${on?'Great work today! ✨':'Tap when done'}</p>
-    </div>
-  </div>`;
+// ─── Build: Speaking ──────────────────────────────────────────────────────────
+function buildSpeak(){
+  var on=S.entry.speak;
+  return '<div style="text-align:center;padding-top:16px">'+
+    '<div class="sec-hdr" style="justify-content:center">🗣️ Speaking Practice</div>'+
+    '<div style="padding:24px 0">'+
+      '<button class="speak-btn'+(on?' on':'')+'" id="speakBtn">'+(on?'✓':'○')+'</button>'+
+      '<p style="margin-top:20px;color:'+(on?GR:MU)+';font-size:15px;font-weight:500">'+(on?'Great work! ✨':'Tap when done')+'</p>'+
+    '</div></div>';
 }
 
-// ── TODOS ─────────────────────────────────────────────────────────────────────
-function renderTodos(){
-  const todos=S.entry.todos||[];
-  const done=todos.filter(t=>t.done).length;
-  let h=`<div class="sec-hdr">✅ To-Dos</div>`;
-  if(todos.length)h+=`<div style="font-size:12px;color:${C.muted};margin-bottom:14px">${done}/${todos.length} completed</div>`;
-  todos.forEach(todo=>{
-    const sd=todo.subs.filter(s=>s.done).length;
-    const open=todo._open;
-    h+=`<div class="todo-item${todo.done?' done':''}" data-tid="${todo.id}">
-      <div class="todo-row">
-        <button class="todo-check${todo.done?' done':''}" data-tog="${todo.id}">${todo.done?'✓':''}</button>
-        <span class="todo-text${todo.done?' done':''}">${esc(todo.text)}</span>
-        <button class="todo-exp" data-exp="${todo.id}">${todo.subs.length?`${sd}/${todo.subs.length} `:'sub '}${open?'▲':'▼'}</button>
-        <button class="todo-del" data-del="${todo.id}">×</button>
-      </div>`;
+// ─── Build: Todos ─────────────────────────────────────────────────────────────
+function buildTodos(){
+  var todos=S.entry.todos||[];
+  var done=todos.filter(function(t){return t.done;}).length;
+  var h='<div class="sec-hdr">✅ To-Dos</div>';
+  if(todos.length)h+='<div style="font-size:12px;color:'+MU+';margin-bottom:14px">'+done+'/'+todos.length+' completed</div>';
+  todos.forEach(function(todo){
+    var sd=todo.subs.filter(function(s){return s.done;}).length;
+    var open=todo._open;
+    h+='<div class="todo-item'+(todo.done?' done':'')+'">'+
+      '<div class="todo-row">'+
+        '<button class="chk'+(todo.done?' on':'')+'" style="width:22px;height:22px;font-size:11px" data-tog="'+todo.id+'">'+(todo.done?'✓':'')+'</button>'+
+        '<span style="flex:1;font-size:14px;line-height:1.4;color:'+(todo.done?MU:'#1e1408')+';text-decoration:'+(todo.done?'line-through':'none')+'">'+esc(todo.text)+'</span>'+
+        '<button class="exp-btn" data-exp="'+todo.id+'">'+(todo.subs.length?sd+'/'+todo.subs.length+' ':'sub ')+(open?'▲':'▼')+'</button>'+
+        '<button class="del-btn" data-del="'+todo.id+'">×</button>'+
+      '</div>';
     if(open){
-      h+=`<div class="todo-subs">`;
-      todo.subs.forEach(s=>{
-        h+=`<div class="sub-row">
-          <div class="sub-line"></div>
-          <button class="sub-check${s.done?' done':''}" data-stog="${todo.id},${s.id}">${s.done?'✓':''}</button>
-          <span class="sub-text${s.done?' done':''}">${esc(s.text)}</span>
-          <button class="todo-del" data-sdel="${todo.id},${s.id}">×</button>
-        </div>`;
+      h+='<div class="todo-subs">';
+      todo.subs.forEach(function(s){
+        h+='<div class="sub-row">'+
+          '<div style="width:14px;border-top:1.5px dashed '+BO+';flex-shrink:0"></div>'+
+          '<button class="sub-chk'+(s.done?' on':'')+'" style="width:17px;height:17px;font-size:9px" data-stog="'+todo.id+','+s.id+'">'+(s.done?'✓':'')+'</button>'+
+          '<span style="flex:1;font-size:13px;color:'+(s.done?MU:'#1e1408')+';text-decoration:'+(s.done?'line-through':'none')+'">'+esc(s.text)+'</span>'+
+          '<button class="del-btn" style="font-size:14px" data-sdel="'+todo.id+','+s.id+'">×</button>'+
+        '</div>';
       });
-      h+=`<div style="display:flex;gap:7px;margin-top:8px;padding-left:22px">
-        <input class="inp" id="subInp_${todo.id}" placeholder="Add sub-task..." style="font-size:12px;padding:7px 10px;border:1px dashed #e8e0d4">
-        <button style="padding:7px 12px;border-radius:10px;border:none;background:#6aaa8a;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" data-addsub="${todo.id}">+</button>
-      </div></div>`;
+      h+='<div style="display:flex;gap:7px;margin-top:8px;padding-left:22px">'+
+        '<input class="inp" id="sInp_'+todo.id+'" placeholder="Add sub-task..." style="font-size:12px;padding:7px 10px;border:1px dashed '+BO+'">'+
+        '<button style="padding:7px 12px;border-radius:10px;border:none;background:'+MI+';color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" data-addsub="'+todo.id+'">+</button>'+
+      '</div></div>';
     }
-    h+=`</div>`;
+    h+='</div>';
   });
-  h+=`<div class="add-row">
-    <input class="add-inp" id="todoInp" placeholder="Add a task...">
-    <button class="add-btn" id="addTodo">+</button>
-  </div>`;
+  h+='<div class="add-row"><input class="add-inp" id="todoInp" placeholder="Add a task..."><button class="add-btn-g" id="addTodo">+</button></div>';
   return h;
 }
 
-// ── Attach events for current section ─────────────────────────────────────────
-function markDirty(){S.dirty=true;renderBotBtns();}
-
+// ─── Attach section events ────────────────────────────────────────────────────
 function attachSection(){
-  const card=document.getElementById('secCard');
+  var card=ge('secCard');
 
   // Meditation
-  card.querySelector('#medTime')?.addEventListener('input',e=>{S.entry.meditation.time=e.target.value;markDirty();});
-  card.querySelector('#medLaps')?.addEventListener('input',e=>{S.entry.meditation.laps=e.target.value;markDirty();});
-  card.querySelector('#medNote')?.addEventListener('input',e=>{S.entry.meditation.note=e.target.value;markDirty();});
-  card.querySelectorAll('[data-mm]').forEach(b=>b.addEventListener('click',()=>{S.entry.meditation.method=b.dataset.mm;markDirty();renderSection();}));
-  card.querySelectorAll('[data-rv]').forEach(b=>b.addEventListener('click',()=>{S.entry.meditation.restlessness=+b.dataset.rv;markDirty();renderSection();}));
+  var mTime=ge('mTime');if(mTime)mTime.addEventListener('input',function(){S.entry.meditation.time=this.value;markDirty();});
+  var mLaps=ge('mLaps');if(mLaps)mLaps.addEventListener('input',function(){S.entry.meditation.laps=this.value;markDirty();});
+  var mNote=ge('mNote');if(mNote)mNote.addEventListener('input',function(){S.entry.meditation.note=this.value;markDirty();});
+  card.querySelectorAll('[data-mm]').forEach(function(b){b.addEventListener('click',function(){S.entry.meditation.method=b.dataset.mm;markDirty();renderSection();});});
+  card.querySelectorAll('[data-rv]').forEach(function(b){b.addEventListener('click',function(){S.entry.meditation.restlessness=+b.dataset.rv;markDirty();renderSection();});});
 
   // Reading
-  card.querySelector('#readTitle')?.addEventListener('input',e=>{S.entry.read.title=e.target.value;markDirty();});
-  card.querySelector('#readNotes')?.addEventListener('input',e=>{S.entry.read.notes=e.target.value;markDirty();});
+  var rTitle=ge('rTitle');if(rTitle)rTitle.addEventListener('input',function(){S.entry.read.title=this.value;markDirty();});
+  var rNotes=ge('rNotes');if(rNotes)rNotes.addEventListener('input',function(){S.entry.read.notes=this.value;markDirty();});
 
   // Skin
-  card.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{S.skinPeriod[S.selDate]=b.dataset.period;renderSection();}));
-  card.querySelectorAll('[data-slot][data-sk]').forEach(b=>b.addEventListener('click',()=>{
-    const slot=b.dataset.slot,sk=b.dataset.sk;
+  card.querySelectorAll('[data-period]').forEach(function(b){b.addEventListener('click',function(){S.skinPeriod[S.selDate]=b.dataset.period;renderSection();});});
+  card.querySelectorAll('[data-slot][data-sk]').forEach(function(b){b.addEventListener('click',function(){
+    var slot=b.dataset.slot,sk=b.dataset.sk;
     if(!S.entry.skin[slot])S.entry.skin[slot]={_custom:[]};
     S.entry.skin[slot][sk]=!S.entry.skin[slot][sk];markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-slot][data-rk]').forEach(b=>b.addEventListener('click',()=>{
-    const slot=b.dataset.slot,rk=b.dataset.rk;
-    const sl=S.entry.skin[slot];delete sl[rk];sl._custom=(sl._custom||[]).filter(c=>c.key!==rk);
+  });});
+  card.querySelectorAll('[data-slot][data-rk]').forEach(function(b){b.addEventListener('click',function(){
+    var slot=b.dataset.slot,rk=b.dataset.rk;
+    var sl=S.entry.skin[slot];delete sl[rk];sl._custom=(sl._custom||[]).filter(function(c){return c.key!==rk;});
     markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-addstep]').forEach(b=>b.addEventListener('click',()=>{
-    const slot=b.dataset.addstep;
-    const inp=card.querySelector('#skinNewStep_'+slot);
-    const label=(inp?.value||'').trim();if(!label)return;
-    const key='c_'+label.toLowerCase().replace(/\s+/g,'_')+'_'+Date.now();
+  });});
+  card.querySelectorAll('[data-addstep]').forEach(function(b){b.addEventListener('click',function(){
+    var slot=b.dataset.addstep;
+    var inp=ge('sNew_'+slot);var label=(inp?inp.value:'').trim();if(!label)return;
+    var key='c_'+label.toLowerCase().replace(/\s+/g,'_')+'_'+Date.now();
     if(!S.entry.skin[slot])S.entry.skin[slot]={_custom:[]};
     S.entry.skin[slot][key]=false;
-    (S.entry.skin[slot]._custom=S.entry.skin[slot]._custom||[]).push({key,label});
+    (S.entry.skin[slot]._custom=S.entry.skin[slot]._custom||[]).push({key:key,label:label});
     markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-brk]').forEach(b=>b.addEventListener('click',()=>{
-    S.entry.skin.breakout=b.dataset.brk==='true';markDirty();renderSection();
-  }));
+  });});
+  card.querySelectorAll('[data-brk]').forEach(function(b){b.addEventListener('click',function(){S.entry.skin.breakout=b.dataset.brk==='true';markDirty();renderSection();});});
 
   // Gym
-  card.querySelector('#addGym')?.addEventListener('click',()=>{S.entry.gym.push(newGym());markDirty();renderSection();});
-  card.querySelectorAll('[data-remgym]').forEach(b=>b.addEventListener('click',()=>{
-    S.entry.gym.splice(+b.dataset.remgym,1);markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-gi][data-gm]').forEach(b=>b.addEventListener('click',()=>{
-    S.entry.gym[+b.dataset.gi].muscle=b.dataset.gm;markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-gi][data-gf]').forEach(inp=>inp.addEventListener('input',e=>{
-    S.entry.gym[+inp.dataset.gi][inp.dataset.gf]=e.target.value;markDirty();
-  }));
+  var addGym=ge('addGym');if(addGym)addGym.addEventListener('click',function(){S.entry.gym.push(newGym());markDirty();renderSection();});
+  card.querySelectorAll('[data-rg]').forEach(function(b){b.addEventListener('click',function(){S.entry.gym.splice(+b.dataset.rg,1);markDirty();renderSection();});});
+  card.querySelectorAll('[data-gi][data-gm]').forEach(function(b){b.addEventListener('click',function(){S.entry.gym[+b.dataset.gi].muscle=b.dataset.gm;markDirty();renderSection();});});
+  card.querySelectorAll('[data-gi][data-gf]').forEach(function(inp){inp.addEventListener('input',function(){S.entry.gym[+inp.dataset.gi][inp.dataset.gf]=this.value;markDirty();});});
 
   // Speaking
-  card.querySelector('#speakBtn')?.addEventListener('click',()=>{S.entry.speak=!S.entry.speak;markDirty();renderSection();});
+  var speakBtn=ge('speakBtn');if(speakBtn)speakBtn.addEventListener('click',function(){S.entry.speak=!S.entry.speak;markDirty();renderSection();});
 
   // Todos
-  card.querySelector('#addTodo')?.addEventListener('click',()=>{
-    const inp=card.querySelector('#todoInp');const t=(inp?.value||'').trim();
-    if(!t)return;S.entry.todos.push({id:uid(),text:t,done:false,subs:[],_open:false});
-    markDirty();renderSection();
-  });
-  card.querySelector('#todoInp')?.addEventListener('keydown',e=>{if(e.key==='Enter'){card.querySelector('#addTodo')?.click();}});
-  card.querySelectorAll('[data-tog]').forEach(b=>b.addEventListener('click',()=>{
-    const td=S.entry.todos.find(t=>t.id===b.dataset.tog);if(td)td.done=!td.done;markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{
-    S.entry.todos=S.entry.todos.filter(t=>t.id!==b.dataset.del);markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-exp]').forEach(b=>b.addEventListener('click',()=>{
-    const td=S.entry.todos.find(t=>t.id===b.dataset.exp);if(td)td._open=!td._open;renderSection();
-  }));
-  card.querySelectorAll('[data-stog]').forEach(b=>b.addEventListener('click',()=>{
-    const[tid,sid]=b.dataset.stog.split(',');
-    const td=S.entry.todos.find(t=>t.id===tid);
-    const s=td?.subs.find(x=>x.id===sid);if(s)s.done=!s.done;markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-sdel]').forEach(b=>b.addEventListener('click',()=>{
-    const[tid,sid]=b.dataset.sdel.split(',');
-    const td=S.entry.todos.find(t=>t.id===tid);
-    if(td)td.subs=td.subs.filter(x=>x.id!==sid);markDirty();renderSection();
-  }));
-  card.querySelectorAll('[data-addsub]').forEach(b=>b.addEventListener('click',()=>{
-    const tid=b.dataset.addsub;
-    const inp=card.querySelector('#subInp_'+tid);
-    const t=(inp?.value||'').trim();if(!t)return;
-    const td=S.entry.todos.find(x=>x.id===tid);
+  var addTodo=ge('addTodo');
+  var todoInp=ge('todoInp');
+  function doAddTodo(){var t=(todoInp?todoInp.value:'').trim();if(!t)return;S.entry.todos.push({id:uid(),text:t,done:false,subs:[],_open:false});if(todoInp)todoInp.value='';markDirty();renderSection();}
+  if(addTodo)addTodo.addEventListener('click',doAddTodo);
+  if(todoInp)todoInp.addEventListener('keydown',function(e){if(e.key==='Enter')doAddTodo();});
+  card.querySelectorAll('[data-tog]').forEach(function(b){b.addEventListener('click',function(){var td=S.entry.todos.find(function(t){return t.id===b.dataset.tog;});if(td)td.done=!td.done;markDirty();renderSection();});});
+  card.querySelectorAll('[data-del]').forEach(function(b){b.addEventListener('click',function(){S.entry.todos=S.entry.todos.filter(function(t){return t.id!==b.dataset.del;});markDirty();renderSection();});});
+  card.querySelectorAll('[data-exp]').forEach(function(b){b.addEventListener('click',function(){var td=S.entry.todos.find(function(t){return t.id===b.dataset.exp;});if(td)td._open=!td._open;renderSection();});});
+  card.querySelectorAll('[data-stog]').forEach(function(b){b.addEventListener('click',function(){var p=b.dataset.stog.split(',');var td=S.entry.todos.find(function(t){return t.id===p[0];});var s=td&&td.subs.find(function(x){return x.id===p[1];});if(s)s.done=!s.done;markDirty();renderSection();});});
+  card.querySelectorAll('[data-sdel]').forEach(function(b){b.addEventListener('click',function(){var p=b.dataset.sdel.split(',');var td=S.entry.todos.find(function(t){return t.id===p[0];});if(td)td.subs=td.subs.filter(function(x){return x.id!==p[1];});markDirty();renderSection();});});
+  card.querySelectorAll('[data-addsub]').forEach(function(b){b.addEventListener('click',function(){
+    var tid=b.dataset.addsub;var inp=ge('sInp_'+tid);var t=(inp?inp.value:'').trim();if(!t)return;
+    var td=S.entry.todos.find(function(x){return x.id===tid;});
     if(td)td.subs.push({id:uid(),text:t,done:false});
     markDirty();renderSection();
-  }));
-  card.querySelectorAll('[id^="subInp_"]').forEach(inp=>inp.addEventListener('keydown',e=>{
-    if(e.key==='Enter'){const tid=inp.id.replace('subInp_','');card.querySelector(`[data-addsub="${tid}"]`)?.click();}
-  }));
+  });});
+  card.querySelectorAll('[id^="sInp_"]').forEach(function(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter'){var tid=inp.id.replace('sInp_','');var btn=card.querySelector('[data-addsub="'+tid+'"]');if(btn)btn.click();}});});
 }
 
-// ── STREAKS ───────────────────────────────────────────────────────────────────
+// ─── Streaks ──────────────────────────────────────────────────────────────────
 function renderStreaks(){
-  const el=document.getElementById('streaksContent');
+  var el=ge('streaksInner');
   if(!Object.keys(S.all).length){
-    el.innerHTML=`<div style="text-align:center;padding-top:60px;color:${C.muted}"><div style="font-size:48px;margin-bottom:12px">🔥</div><div style="font-size:14px">Log your first day to start streaks!</div></div>`;
+    el.innerHTML='<div style="text-align:center;padding-top:60px;color:'+MU+'"><div style="font-size:48px;margin-bottom:12px">🔥</div><div style="font-size:14px">Log your first day to start streaks!</div></div>';
     return;
   }
-  let h=`<div style="font-size:12px;color:${C.muted};margin-bottom:14px">Last 14 days · filled = completed</div>`;
-  HABITS.forEach(hab=>{
-    const s=calcStreak(hab.key);
-    const dots=Array.from({length:14},(_,i)=>{const e=S.all[daysAgo(13-i)];return e&&hab.check(e);});
-    const bar=dots.map(d=>`<div style="flex:1;height:8px;border-radius:4px;background:${d?C.mint:'#ede9e3'}"></div>`).join('');
-    h+=`<div class="streak-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px">${hab.icon}</span><span style="font-weight:600">${hab.label}</span></div>
-        <div style="display:flex;align-items:baseline;gap:4px">
-          <span style="font-size:30px;font-weight:700;color:${C.green}">${s}</span>
-          <span style="font-size:11px;color:${C.muted}">day${s!==1?'s':''}</span>
-          <span style="font-size:18px;margin-left:4px">${s>=7?'🔥':s>=3?'⚡':'○'}</span>
-        </div>
-      </div>
-      <div style="display:flex;gap:4px">${bar}</div>
-      <div style="display:flex;justify-content:space-between;margin-top:4px">
-        <span style="font-size:9px;color:#c4b9ac">14d ago</span>
-        <span style="font-size:9px;color:#c4b9ac">today</span>
-      </div>
-    </div>`;
+  var h='<div style="font-size:12px;color:'+MU+';margin-bottom:14px">Last 14 days · filled = completed</div>';
+  HABITS.forEach(function(hab){
+    var s=calcStreak(hab.key);
+    var dots=[];for(var i=0;i<14;i++){var e=S.all[daysAgo(13-i)];dots.push(e&&hab.check(e));}
+    var bar=dots.map(function(d){return'<div style="flex:1;height:8px;border-radius:4px;background:'+(d?MI:'#ede9e3')+'"></div>';}).join('');
+    h+='<div class="streak-card">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">'+
+        '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px">'+hab.icon+'</span><span style="font-weight:600">'+hab.label+'</span></div>'+
+        '<div style="display:flex;align-items:baseline;gap:4px">'+
+          '<span style="font-size:30px;font-weight:700;color:'+GR+'">'+s+'</span>'+
+          '<span style="font-size:11px;color:'+MU+'">day'+(s!==1?'s':'')+'</span>'+
+          '<span style="font-size:18px;margin-left:4px">'+(s>=7?'🔥':s>=3?'⚡':'○')+'</span>'+
+        '</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:4px">'+bar+'</div>'+
+      '<div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:9px;color:#c4b9ac">14d ago</span><span style="font-size:9px;color:#c4b9ac">today</span></div>'+
+    '</div>';
   });
   el.innerHTML=h;
 }
 
-// ── INSIGHTS ──────────────────────────────────────────────────────────────────
+// ─── Insights ─────────────────────────────────────────────────────────────────
 function renderInsights(){
-  const el=document.getElementById('insightsContent');
-  const dates=Object.keys(S.all);
+  var el=ge('insightsInner');
+  var dates=Object.keys(S.all);
   if(!dates.length){
-    el.innerHTML=`<div style="text-align:center;padding-top:60px;color:${C.muted}"><div style="font-size:48px;margin-bottom:12px">📊</div><div style="font-size:14px">Start logging to see insights!</div></div>`;
+    el.innerHTML='<div style="text-align:center;padding-top:60px;color:'+MU+'"><div style="font-size:48px;margin-bottom:12px">📊</div><div style="font-size:14px">Start logging to see insights!</div></div>';
     return;
   }
-  const total=dates.length;
-  const avg=(dates.reduce((s,d)=>s+HABITS.filter(h=>h.check(S.all[d])).length,0)/total).toFixed(1);
-  const best=Math.max(0,...HABITS.map(h=>calcStreak(h.key)));
-  const l14=Array.from({length:14},(_,i)=>{
-    const date=daysAgo(13-i);const e=S.all[date];
-    return{date:shortD(date),score:e?HABITS.filter(h=>h.check(e)).length:0,med:e?(parseFloat(e.meditation?.time)||0):0};
-  });
-  // SVG bar chart
-  const BH=70,BW=100,n=14,slotW=BW/n;
-  const barSvg=`<svg viewBox="0 0 ${BW} ${BH+18}" width="100%" height="${BH+18}" preserveAspectRatio="none">
-    ${l14.map((d,i)=>{
-      const hh=Math.max(d.score/5*BH,1);const x=i*slotW+slotW*.15;const bw=slotW*.7;
-      const fill=d.score>=4?C.green:d.score>=2?C.mint:'#e8e0d4';
-      return`<rect x="${x}" y="${BH-hh}" width="${bw}" height="${hh}" rx="2" fill="${fill}"/>
-             <text x="${i*slotW+slotW/2}" y="${BH+14}" text-anchor="middle" font-size="4" fill="#8a7968">${d.date}</text>`;
-    }).join('')}
-  </svg>`;
-  // SVG line chart
-  const medMax=Math.max(...l14.map(d=>d.med),1);
-  const pts=l14.map((d,i)=>`${i*(BW/(n-1))},${BH-(d.med/medMax*BH)}`).join(' ');
-  const lineSvg=`<svg viewBox="0 0 ${BW} ${BH+18}" width="100%" height="${BH+18}" preserveAspectRatio="none">
-    <polyline points="${pts}" fill="none" stroke="${C.orange}" stroke-width="1.5" stroke-linejoin="round"/>
-    ${l14.map((d,i)=>{const x=i*(BW/(n-1));const y=BH-(d.med/medMax*BH);return`<circle cx="${x}" cy="${y}" r="2" fill="${C.orange}"/><text x="${x}" y="${BH+14}" text-anchor="middle" font-size="4" fill="#8a7968">${d.date}</text>`;}).join('')}
-  </svg>`;
-  // Skin stats
-  const skinK=['moisturiser','cleanse','sunscreen','exfoliate'];
-  const skinNames={moisturiser:'Moisturise',cleanse:'Cleanse',sunscreen:'Sunscreen',exfoliate:'Exfoliate'};
-  const skinBars=skinK.map(k=>{
-    const pct=Math.round(dates.filter(d=>S.all[d]?.skin?.am?.[k]||S.all[d]?.skin?.pm?.[k]).length/total*100);
-    const bg=pct>=70?C.mint:pct>=40?C.tan:C.orange;
-    return`<div style="margin-bottom:11px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>${skinNames[k]}</span><span style="color:${C.muted}">${pct}%</span></div>
-      <div style="height:8px;background:#ede9e3;border-radius:4px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${bg};border-radius:4px"></div></div>
-    </div>`;
+  var total=dates.length;
+  var avg=(dates.reduce(function(s,d){return s+HABITS.filter(function(h){return h.check(S.all[d]);}).length;},0)/total).toFixed(1);
+  var best=0;HABITS.forEach(function(h){var s=calcStreak(h.key);if(s>best)best=s;});
+  var l14=[];for(var i=0;i<14;i++){var date=daysAgo(13-i);var e=S.all[date];l14.push({date:shortD(date),score:e?HABITS.filter(function(h){return h.check(e);}).length:0,med:e?(parseFloat(e.meditation&&e.meditation.time)||0):0});}
+  // Charts
+  var BH=70,BW=100,n=14,sw=BW/n;
+  var barSvg='<svg viewBox="0 0 '+BW+' '+(BH+18)+'" width="100%" preserveAspectRatio="none">'+
+    l14.map(function(d,i){var hh=Math.max(d.score/5*BH,1);var x=i*sw+sw*.15;var bw=sw*.7;var fill=d.score>=4?GR:d.score>=2?MI:'#e8e0d4';
+      return'<rect x="'+x+'" y="'+(BH-hh)+'" width="'+bw+'" height="'+hh+'" rx="2" fill="'+fill+'"/>'+
+             '<text x="'+(i*sw+sw/2)+'" y="'+(BH+14)+'" text-anchor="middle" font-size="4" fill="'+MU+'">'+d.date+'</text>';}).join('')+'</svg>';
+  var medMax=1;l14.forEach(function(d){if(d.med>medMax)medMax=d.med;});
+  var pts=l14.map(function(d,i){return(i*(BW/(n-1)))+','+(BH-(d.med/medMax*BH));}).join(' ');
+  var lineSvg='<svg viewBox="0 0 '+BW+' '+(BH+18)+'" width="100%" preserveAspectRatio="none">'+
+    '<polyline points="'+pts+'" fill="none" stroke="'+OR+'" stroke-width="1.5"/>'+
+    l14.map(function(d,i){var x=i*(BW/(n-1));var y=BH-(d.med/medMax*BH);
+      return'<circle cx="'+x+'" cy="'+y+'" r="2" fill="'+OR+'"/>'+
+             '<text x="'+x+'" y="'+(BH+14)+'" text-anchor="middle" font-size="4" fill="'+MU+'">'+d.date+'</text>';}).join('')+'</svg>';
+  // Skin bars
+  var skinK=['moisturiser','cleanse','sunscreen','exfoliate'];
+  var skinN={moisturiser:'Moisturise',cleanse:'Cleanse',sunscreen:'Sunscreen',exfoliate:'Exfoliate'};
+  var skinBars=skinK.map(function(k){
+    var pct=Math.round(dates.filter(function(d){return(S.all[d]&&S.all[d].skin&&(S.all[d].skin.am&&S.all[d].skin.am[k]||S.all[d].skin.pm&&S.all[d].skin.pm[k]));}).length/total*100);
+    var bg=pct>=70?MI:pct>=40?TA:OR;
+    return'<div style="margin-bottom:11px">'+
+      '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>'+skinN[k]+'</span><span style="color:'+MU+'">'+pct+'%</span></div>'+
+      '<div style="height:8px;background:#ede9e3;border-radius:4px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+bg+';border-radius:4px"></div></div>'+
+    '</div>';
   }).join('');
-  el.innerHTML=`
-    <div class="stat-grid">
-      <div class="stat-card"><div class="stat-val">${total}</div><div class="stat-lbl">Days</div></div>
-      <div class="stat-card"><div class="stat-val">${avg}</div><div class="stat-lbl">Avg/day</div></div>
-      <div class="stat-card"><div class="stat-val">${best}</div><div class="stat-lbl">Best streak</div></div>
-    </div>
-    <div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:10px">Habits completed (last 14 days)</div>${barSvg}</div>
-    <div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:10px">Meditation minutes (last 14 days)</div>${lineSvg}</div>
-    <div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Skin care consistency</div>${skinBars}</div>
-    <div class="ai-card">
-      <div class="ai-title">🤖 AI Insight Analysis</div>
-      <div class="ai-sub">Claude reads your last 14 days and gives you a personal written analysis — patterns, wins, and what to focus on.</div>
-      <div id="aiKeySection">
-        <div style="font-size:11px;opacity:.7;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Anthropic API Key</div>
-        <div class="ai-key-row">
-          <input class="ai-key-inp" type="password" id="apiKeyInp" placeholder="sk-ant-...">
-          <button class="ai-key-save" id="saveApiKey">Save</button>
-        </div>
-        <div style="font-size:11px;opacity:.6;line-height:1.5;margin-bottom:12px">Get a free key at console.anthropic.com · stored only on your device</div>
-      </div>
-      <button class="ai-btn" id="aiAnalyzeBtn">✨ Analyse my ritual</button>
-      <div id="aiOutput"></div>
-    </div>`;
-  setTimeout(attachAiCard,0);
-}
 
-// ── AI ANALYSIS ──────────────────────────────────────────────────────────────
-function attachAiCard(){
-  const keyInp=document.getElementById('apiKeyInp');
-  const keySection=document.getElementById('aiKeySection');
-  const saved=ls.get('ritual:apikey')||'';
-  if(saved&&keySection)keySection.style.display='none';
-  if(keyInp)keyInp.value='';
+  // API key check for AI section
+  var hasKey=!!ls.get('ritual:apikey');
 
-  document.getElementById('saveApiKey')?.addEventListener('click',()=>{
-    const k=(keyInp?.value||'').trim();
-    if(!k)return;
+  el.innerHTML=
+    '<div class="stat-grid">'+
+      '<div class="stat-card"><div style="font-size:24px;font-weight:700;color:'+GR+'">'+total+'</div><div style="font-size:10px;color:'+MU+';margin-top:3px">Days</div></div>'+
+      '<div class="stat-card"><div style="font-size:24px;font-weight:700;color:'+GR+'">'+avg+'</div><div style="font-size:10px;color:'+MU+';margin-top:3px">Avg/day</div></div>'+
+      '<div class="stat-card"><div style="font-size:24px;font-weight:700;color:'+GR+'">'+best+'</div><div style="font-size:10px;color:'+MU+';margin-top:3px">Best streak</div></div>'+
+    '</div>'+
+    '<div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:10px">Habits completed (last 14 days)</div>'+barSvg+'</div>'+
+    '<div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:10px">Meditation minutes (last 14 days)</div>'+lineSvg+'</div>'+
+    '<div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Skin care consistency</div>'+skinBars+'</div>'+
+    // AI card
+    '<div class="ai-card">'+
+      '<div style="font-size:15px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px">🤖 AI Insight Analysis</div>'+
+      '<div style="font-size:12px;opacity:.75;margin-bottom:16px;line-height:1.5">Claude reads your last 14 days and gives you a personal written analysis — patterns, wins, and what to focus on.</div>'+
+      '<div id="aiKeySection" style="display:'+(hasKey?'none':'block')+'">'+
+        '<div style="font-size:11px;opacity:.7;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Anthropic API Key</div>'+
+        '<div class="ai-key-row">'+
+          '<input class="ai-key-inp" type="password" id="apiKeyInp" placeholder="sk-ant-...">'+
+          '<button class="ai-key-save" id="saveApiKey">Save</button>'+
+        '</div>'+
+        '<div style="font-size:11px;opacity:.6;line-height:1.5;margin-bottom:12px">Get a free key at console.anthropic.com · stored only on your device</div>'+
+      '</div>'+
+      '<button class="ai-btn" id="aiBtn">✨ Analyse my ritual</button>'+
+      '<div id="aiOut"></div>'+
+    '</div>';
+
+  // Attach AI events
+  var saveKeyBtn=ge('saveApiKey');
+  if(saveKeyBtn)saveKeyBtn.addEventListener('click',function(){
+    var inp=ge('apiKeyInp');var k=(inp?inp.value:'').trim();if(!k)return;
     ls.set('ritual:apikey',k);
-    if(keySection)keySection.style.display='none';
-    showToast('API key saved 🔑');
+    var ks=ge('aiKeySection');if(ks)ks.style.display='none';
+    toast('API key saved 🔑');
   });
-
-  document.getElementById('aiAnalyzeBtn')?.addEventListener('click',runAiAnalysis);
+  var aiBtn=ge('aiBtn');
+  if(aiBtn)aiBtn.addEventListener('click',runAI);
 }
 
-async function runAiAnalysis(){
-  const apiKey=ls.get('ritual:apikey');
-  if(!apiKey){
-    const ks=document.getElementById('aiKeySection');
-    if(ks)ks.style.display='block';
-    document.getElementById('apiKeyInp')?.focus();
-    return;
-  }
-  const btn=document.getElementById('aiAnalyzeBtn');
-  const out=document.getElementById('aiOutput');
+// ─── AI Analysis ──────────────────────────────────────────────────────────────
+function runAI(){
+  var apiKey=ls.get('ritual:apikey');
+  if(!apiKey){var ks=ge('aiKeySection');if(ks)ks.style.display='block';var inp=ge('apiKeyInp');if(inp)inp.focus();return;}
+  var btn=ge('aiBtn');var out=ge('aiOut');
   btn.disabled=true;btn.textContent='Analysing...';
-  out.innerHTML='<div class="ai-loading"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Reading your data...</span></div>';
-
-  // Build data summary for last 14 days
-  const lines=[];
-  for(let i=13;i>=0;i--){
-    const date=daysAgo(i);
-    const e=S.all[date];
-    if(!e){lines.push(`${date}: no entry`);continue;}
-    const parts=[];
-    if(parseFloat(e.meditation?.time)>0)parts.push(`meditation ${e.meditation.time}min (restlessness ${e.meditation.restlessness||0}/10, method: ${e.meditation.method||'unset'})`);
-    if((e.read?.title||e.read?.notes||'').trim())parts.push(`reading: "${(e.read?.title||'').trim()||'untitled'}"`);
-    const amDone=Object.entries(e.skin?.am||{}).filter(([k,v])=>k!=='_custom'&&v===true).map(([k])=>k);
-    const pmDone=Object.entries(e.skin?.pm||{}).filter(([k,v])=>k!=='_custom'&&v===true).map(([k])=>k);
-    if(amDone.length||pmDone.length)parts.push(`skin: AM[${amDone.join(',')||'none'}] PM[${pmDone.join(',')||'none'}]${e.skin?.breakout?' BREAKOUT':''}`);
-    if(e.gym?.some(g=>g.exercise?.trim()))parts.push(`gym: ${e.gym.filter(g=>g.exercise?.trim()).map(g=>`${g.muscle||'?'} - ${g.exercise}`).join('; ')}`);
-    if(e.speak)parts.push('speaking practice ✓');
-    const todoDone=(e.todos||[]).filter(t=>t.done).length;
-    const todoTotal=(e.todos||[]).length;
-    if(todoTotal>0)parts.push(`todos: ${todoDone}/${todoTotal} done`);
-    lines.push(`${date}: ${parts.length?parts.join(' | '):'logged but empty'}`);
+  out.innerHTML='<div style="display:flex;align-items:center;gap:8px;font-size:13px;opacity:.8;margin-top:16px"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Reading your data...</span></div>';
+  // Build summary
+  var lines=[];
+  for(var i=13;i>=0;i--){
+    var date=daysAgo(i);var e=S.all[date];
+    if(!e){lines.push(date+': no entry');continue;}
+    var parts=[];
+    if(parseFloat(e.meditation&&e.meditation.time)>0)parts.push('meditation '+e.meditation.time+'min (restlessness '+(e.meditation.restlessness||0)+'/10, method: '+(e.meditation.method||'unset')+')');
+    if((e.read&&(e.read.title||e.read.notes)||'').trim())parts.push('reading: "'+(e.read&&e.read.title||'untitled')+'"');
+    var am=e.skin&&e.skin.am||{};var pm=e.skin&&e.skin.pm||{};
+    var amD=Object.keys(am).filter(function(k){return k!=='_custom'&&am[k]===true;});
+    var pmD=Object.keys(pm).filter(function(k){return k!=='_custom'&&pm[k]===true;});
+    if(amD.length||pmD.length)parts.push('skin: AM['+amD.join(',')+'] PM['+pmD.join(',')+']'+(e.skin&&e.skin.breakout?' BREAKOUT':''));
+    if(e.gym&&e.gym.some(function(g){return g.exercise&&g.exercise.trim();}))parts.push('gym: '+e.gym.filter(function(g){return g.exercise&&g.exercise.trim();}).map(function(g){return(g.muscle||'?')+' - '+g.exercise;}).join('; '));
+    if(e.speak)parts.push('speaking ✓');
+    var td=(e.todos||[]).filter(function(t){return t.done;}).length;var tt=(e.todos||[]).length;
+    if(tt>0)parts.push('todos: '+td+'/'+tt+' done');
+    lines.push(date+': '+(parts.length?parts.join(' | '):'logged but empty'));
   }
+  var prompt='You are a supportive personal development coach analysing a daily ritual journal.\n\nHere is the logged data for the last 14 days:\n\n'+lines.join('\n')+'\n\nWrite a warm, personal, insightful analysis (200-250 words). Cover:\n1. **Overall consistency** — how well are they showing up\n2. **Strongest habit** — what they are nailing\n3. **Needs attention** — the habit most skipped\n4. **Meditation quality** — restlessness trend if data exists\n5. **One specific actionable tip** for the coming week\n\nBe direct, encouraging, and specific. Use their actual data. Write in flowing paragraphs. Address them as "you".';
 
-  const prompt=`You are a supportive personal development coach analysing someone's daily ritual journal.
-
-Here is their logged data for the last 14 days:
-
-${lines.join('\n')}
-
-Write a warm, personal, insightful analysis (around 200-250 words). Cover:
-1. **Overall consistency** — how well are they showing up across all habits
-2. **Strongest habit** — what they're nailing
-3. **Needs attention** — the habit most at risk or skipped
-4. **Meditation quality** — comment on their restlessness trend if data exists
-5. **One specific actionable tip** for the coming week
-
-Be direct, encouraging, and specific. Use their actual data. Do not use bullet points — write in flowing paragraphs. Address them as "you".`;
-
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:600,stream:true,
-        messages:[{role:'user',content:prompt}]})
-    });
-
-    if(!res.ok){
-      const err=await res.json().catch(()=>({}));
-      throw new Error(err?.error?.message||'API error '+res.status);
-    }
-
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,stream:true,messages:[{role:'user',content:prompt}]})
+  }).then(function(res){
+    if(!res.ok)return res.json().then(function(j){throw new Error(j&&j.error&&j.error.message||'API error '+res.status);});
     out.innerHTML='<div class="ai-result" id="aiText"></div>';
-    const textEl=document.getElementById('aiText');
-    const reader=res.body.getReader();
-    const decoder=new TextDecoder();
-    let full='';
-
-    while(true){
-      const{done,value}=await reader.read();
-      if(done)break;
-      const chunk=decoder.decode(value,{stream:true});
-      const lines2=chunk.split('\n');
-      for(const line of lines2){
-        if(!line.startsWith('data: '))continue;
-        const data=line.slice(6).trim();
-        if(data==='[DONE]')continue;
-        try{
-          const j=JSON.parse(data);
-          if(j.type==='content_block_delta'&&j.delta?.text){
-            full+=j.delta.text;
-            textEl.textContent=full;
-          }
-        }catch{}
-      }
+    var textEl=ge('aiText');var full='';
+    var reader=res.body.getReader();var decoder=new TextDecoder();
+    function read(){
+      reader.read().then(function(r){
+        if(r.done){textEl.innerHTML=full.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');btn.disabled=false;btn.textContent='✨ Analyse again';return;}
+        var chunk=decoder.decode(r.value,{stream:true});
+        chunk.split('\n').forEach(function(line){
+          if(!line.startsWith('data: '))return;
+          var data=line.slice(6).trim();if(data==='[DONE]')return;
+          try{var j=JSON.parse(data);if(j.type==='content_block_delta'&&j.delta&&j.delta.text){full+=j.delta.text;textEl.textContent=full;}}catch(e){}
+        });
+        read();
+      });
     }
-    // Bold the section headers
-    textEl.innerHTML=full.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
-  }catch(err){
-    out.innerHTML=`<div style="margin-top:12px;font-size:12px;opacity:.8;line-height:1.6">⚠️ ${err.message}<br><br>Check your API key in the input above or visit console.anthropic.com to get one.</div>`;
-    const ks=document.getElementById('aiKeySection');
-    if(ks)ks.style.display='block';
-  }finally{
-    btn.disabled=false;btn.textContent='✨ Analyse again';
-  }
+    read();
+  }).catch(function(err){
+    out.innerHTML='<div style="margin-top:12px;font-size:12px;opacity:.8;line-height:1.6">⚠️ '+esc(err.message)+'<br><br>Check your API key or visit console.anthropic.com to get one.</div>';
+    var ks=ge('aiKeySection');if(ks)ks.style.display='block';
+    btn.disabled=false;btn.textContent='✨ Analyse my ritual';
+  });
 }
 
-// ── REMINDERS ─────────────────────────────────────────────────────────────────
-function renderReminders(){
-  const el=document.getElementById('remindersContent');
-  const perm=typeof Notification!=='undefined'?Notification.permission:'default';
-  const gClientId=ls.get('ritual:gclientid')||'';
-  const gSynced=ls.get('ritual:glastsync')||'';
+// ─── Alerts ───────────────────────────────────────────────────────────────────
+function renderAlerts(){
+  var el=ge('alertsInner');
+  var perm=typeof Notification!=='undefined'?Notification.permission:'default';
+  var gId=ls.get('ritual:gclientid')||'';
+  var lastSync=ls.get('ritual:glastsync')||'';
 
-  let h='<div style="font-size:18px;font-weight:700;font-family:Georgia,serif;margin-bottom:4px">🔔 Reminders</div>';
-  h+=`<div style="font-size:12px;color:#8a7968;margin-bottom:16px">Daily push reminders for each section</div>`;
+  var h='<div style="font-size:18px;font-weight:700;font-family:Georgia,serif;margin-bottom:4px">🔔 Reminders</div>';
+  h+='<div style="font-size:12px;color:'+MU+';margin-bottom:16px">Daily push reminders for each section</div>';
+
   if(perm!=='granted'){
-    h+=`<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:16px;margin-bottom:16px;text-align:center">
-      <div style="font-size:24px;margin-bottom:6px">🔔</div>
-      <div style="font-size:13px;color:#92400e;margin-bottom:10px">Allow notifications to receive reminders</div>
-      <button id="allowNotif" style="padding:9px 22px;border-radius:12px;border:none;background:#e07b5a;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Allow Notifications</button>
-    </div>`;
+    h+='<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:16px;margin-bottom:16px;text-align:center">'+
+      '<div style="font-size:24px;margin-bottom:6px">🔔</div>'+
+      '<div style="font-size:13px;color:#92400e;margin-bottom:10px">Allow notifications to receive reminders</div>'+
+      '<button id="allowNotif" style="padding:9px 22px;border-radius:12px;border:none;background:'+OR+';color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Allow Notifications</button>'+
+    '</div>';
   }
-  REMS.forEach(s=>{
-    const r=S.reminders[s.key]||{enabled:false,time:'08:00'};
-    h+=`<div class="rem-row">
-      <span style="font-size:22px">${s.icon}</span>
-      <div style="flex:1">
-        <div style="font-weight:600;font-size:14px">${s.label}</div>
-        ${r.enabled?`<input type="time" value="${r.time}" data-remtime="${s.key}" style="margin-top:6px;padding:4px 8px;border-radius:8px;border:1px solid #e8e0d4;font-size:13px;background:#faf6f0;outline:none;font-family:inherit">`:''}
-      </div>
-      <button class="toggle" data-remtog="${s.key}" style="background:${r.enabled?'#2d4a3e':'#e2e8f0'}">
-        <div class="toggle-knob" style="left:${r.enabled?22:3}px"></div>
-      </button>
-    </div>`;
+
+  REMS.forEach(function(s){
+    var r=S.reminders[s.key]||{enabled:false,time:'08:00'};
+    h+='<div class="rem-card">'+
+      '<span style="font-size:22px">'+s.icon+'</span>'+
+      '<div style="flex:1"><div style="font-weight:600;font-size:14px">'+s.label+'</div>'+
+        (r.enabled?'<input type="time" value="'+r.time+'" data-rt="'+s.key+'" style="margin-top:6px;padding:4px 8px;border-radius:8px;border:1px solid '+BO+';font-size:13px;background:#faf6f0;outline:none;font-family:inherit">':'')+
+      '</div>'+
+      '<button class="tog" data-tog="'+s.key+'" style="background:'+(r.enabled?GR:'#e2e8f0')+'">'+
+        '<div class="tog-k" style="left:'+(r.enabled?22:3)+'px"></div>'+
+      '</button>'+
+    '</div>';
   });
 
-  // ── Data & Backup box ──
-  h+=`<div class="data-box" style="margin-top:8px">
-    <div style="font-size:14px;font-weight:700;margin-bottom:4px">💾 Data & Backup</div>
-    <div style="font-size:12px;color:#8a7968;margin-bottom:14px;line-height:1.6">Your data lives on this device in local storage. Export a copy, import a backup, or sync to Google Drive.</div>
-    <div style="display:flex;gap:8px;margin-bottom:10px">
-      <button id="exportBtn" style="flex:1;padding:11px;border-radius:12px;border:1px solid #e8e0d4;background:white;color:#2d4a3e;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">⬇️ Export JSON</button>
-      <button id="importBtn" style="flex:1;padding:11px;border-radius:12px;border:1px solid #e8e0d4;background:white;color:#2d4a3e;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">⬆️ Import JSON</button>
-      <input type="file" id="importFile" accept=".json" style="display:none">
-    </div>
-  </div>`;
+  // Data box
+  h+='<div class="data-box">'+
+    '<div style="font-size:14px;font-weight:700;margin-bottom:4px">💾 Data & Backup</div>'+
+    '<div style="font-size:12px;color:'+MU+';margin-bottom:14px;line-height:1.6">Your data lives on this device in local storage. Export a copy or import a backup.</div>'+
+    '<div style="display:flex;gap:8px">'+
+      '<button id="exportBtn" style="flex:1;padding:11px;border-radius:12px;border:1px solid '+BO+';background:white;color:'+GR+';font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">⬇️ Export JSON</button>'+
+      '<button id="importBtn" style="flex:1;padding:11px;border-radius:12px;border:1px solid '+BO+';background:white;color:'+GR+';font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">⬆️ Import JSON</button>'+
+    '</div>'+
+    '<input type="file" id="importFile" accept=".json" style="display:none">'+
+  '</div>';
 
-  // ── Google Drive Sync box ──
-  h+=`<div class="data-box" style="margin-top:10px;background:linear-gradient(135deg,#e8f5e9,#f0f7f2)">
-    <div style="font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px">
-      <svg width="18" height="18" viewBox="0 0 87.3 78" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="M43.65 25L29.9 1.2C28.55 2 27.4 3.1 26.6 4.5L1.2 48.4C.4 49.8 0 51.35 0 52.9h27.5z" fill="#00ac47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.85 11.5z" fill="#ea4335"/><path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.9 0H34.4c-1.6 0-3.1.45-4.5 1.2z" fill="#00832d"/><path d="M59.8 52.9h27.5c0-1.55-.4-3.1-1.2-4.5L60.7 4.5C59.9 3.1 58.75 2 57.4 1.2L43.65 25z" fill="#2684fc"/><path d="M43.65 25L29.9 48.4l-2.4 4.5h32.3z" fill="#00ac47"/><path d="M27.5 52.9L13.75 76.7c1.35.8 2.9 1.3 4.5 1.3h50.8c1.6 0 3.1-.45 4.5-1.2L59.8 52.9z" fill="#0066da"/></svg>
-      Google Drive Sync
-    </div>
-    <div style="font-size:12px;color:#8a7968;margin-bottom:14px;line-height:1.6">Saves your data automatically to your Google Drive so it's safe and accessible across devices.</div>`;
-
-  if(!gClientId){
-    h+=`<div style="background:white;border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid #e8e0d4">
-      <div style="font-size:12px;font-weight:600;color:#1e1408;margin-bottom:6px">Setup (one time, 3 min)</div>
-      <div style="font-size:11px;color:#8a7968;line-height:1.7;margin-bottom:10px">
-        1. Go to <b>console.cloud.google.com</b><br>
-        2. Create a project → Enable <b>Google Drive API</b><br>
-        3. Go to <b>APIs & Services → Credentials</b><br>
-        4. Create <b>OAuth 2.0 Client ID</b> → Web application<br>
-        5. Add your file URL to <b>Authorised JavaScript origins</b><br>
-        6. Copy the Client ID and paste below
-      </div>
-      <input id="gClientIdInp" style="width:100%;padding:9px 12px;border-radius:10px;border:1px solid #e8e0d4;font-size:12px;outline:none;margin-bottom:8px;font-family:inherit" placeholder="Paste Google OAuth Client ID here...">
-      <button id="saveGClientId" style="width:100%;padding:10px;border-radius:10px;border:none;background:#2d4a3e;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Save Client ID</button>
-    </div>`;
+  // Google Drive box
+  h+='<div class="drive-box">'+
+    '<div style="font-size:14px;font-weight:700;margin-bottom:4px">☁️ Google Drive Sync</div>'+
+    '<div style="font-size:12px;color:'+MU+';margin-bottom:12px;line-height:1.6">Saves your data to Google Drive so it\'s safe and accessible across devices.</div>';
+  if(!gId){
+    h+='<div style="background:white;border-radius:12px;padding:14px;border:1px solid '+BO+'">'+
+      '<div style="font-size:12px;font-weight:600;margin-bottom:8px">One-time setup (~5 min)</div>'+
+      '<div style="font-size:11px;color:'+MU+';line-height:1.8;margin-bottom:10px">'+
+        '1. Go to <b>console.cloud.google.com</b><br>'+
+        '2. Create project → Enable <b>Google Drive API</b><br>'+
+        '3. APIs &amp; Services → Credentials → Create <b>OAuth 2.0 Client ID</b><br>'+
+        '4. Type: Web app · Add your app URL to Authorised JS origins<br>'+
+        '5. Copy the Client ID and paste below'+
+      '</div>'+
+      '<input id="gIdInp" style="width:100%;padding:9px 12px;border-radius:10px;border:1px solid '+BO+';font-size:12px;outline:none;margin-bottom:8px;font-family:inherit" placeholder="Paste Google OAuth Client ID...">'+
+      '<button id="saveGId" style="width:100%;padding:10px;border-radius:10px;border:none;background:'+GR+';color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Save Client ID</button>'+
+    '</div>';
   } else {
-    const status=gSynced?`Last synced: ${new Date(gSynced).toLocaleString()}`:'Not synced yet';
-    h+=`<div style="font-size:11px;color:#8a7968;margin-bottom:10px">${status}</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button id="gdriveSyncBtn" style="flex:1;padding:11px;border-radius:12px;border:none;background:#2d4a3e;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;min-width:120px">☁️ Sync to Drive</button>
-      <button id="gdriveRestoreBtn" style="flex:1;padding:11px;border-radius:12px;border:1px solid #e8e0d4;background:white;color:#2d4a3e;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;min-width:120px">⬇️ Restore from Drive</button>
-    </div>
-    <button id="clearGClientId" style="width:100%;margin-top:8px;padding:8px;border-radius:10px;border:1px solid #e8e0d4;background:transparent;color:#8a7968;font-size:11px;cursor:pointer;font-family:inherit">Disconnect Google account</button>`;
+    h+='<div style="font-size:11px;color:'+MU+';margin-bottom:10px">'+(lastSync?'Last synced: '+new Date(lastSync).toLocaleString():'Not synced yet')+'</div>'+
+      '<div style="display:flex;gap:8px;margin-bottom:8px">'+
+        '<button id="drivePush" style="flex:1;padding:11px;border-radius:12px;border:none;background:'+GR+';color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">☁️ Sync to Drive</button>'+
+        '<button id="drivePull" style="flex:1;padding:11px;border-radius:12px;border:1px solid '+BO+';background:white;color:'+GR+';font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">⬇️ Restore</button>'+
+      '</div>'+
+      '<button id="clearGId" style="width:100%;padding:8px;border-radius:10px;border:1px solid '+BO+';background:transparent;color:'+MU+';font-size:11px;cursor:pointer;font-family:inherit">Disconnect Google account</button>';
   }
-  h+=`</div>`;
+  h+='</div>';
 
-  // ── Address bar notice ──
-  h+=`<div style="background:#fef9c3;border:1px solid #fde68a;border-radius:14px;padding:14px;margin-top:10px">
-    <div style="font-size:13px;font-weight:600;color:#92400e;margin-bottom:6px">📱 Hide the address bar</div>
-    <div style="font-size:12px;color:#92400e;line-height:1.7">
-      To open this app fullscreen without Chrome's address bar:<br>
-      <b>1.</b> Host the file for free on <b>netlify.com/drop</b> (drag &amp; drop, takes 30 seconds)<br>
-      <b>2.</b> Open that URL in Chrome on your phone<br>
-      <b>3.</b> Tap <b>⋮ → Add to Home Screen</b><br>
-      From then on it opens like a real app with no browser chrome.
-    </div>
-  </div>`;
+  // Address bar tip
+  h+='<div class="warn-box">'+
+    '<div style="font-size:13px;font-weight:600;color:#92400e;margin-bottom:6px">📱 Remove the address bar</div>'+
+    '<div style="font-size:12px;color:#92400e;line-height:1.7">'+
+      'Once hosted on GitHub Pages or Netlify, open the URL in Chrome on your phone → tap <b>⋮ → Add to Home Screen</b>. It will open fullscreen like a real app with no address bar.'+
+    '</div>'+
+  '</div>';
 
   el.innerHTML=h;
 
-  // ── Attach events ──
-  document.getElementById('allowNotif')?.addEventListener('click',async()=>{await Notification.requestPermission();renderReminders();});
-  el.querySelectorAll('[data-remtog]').forEach(b=>b.addEventListener('click',()=>{
-    const k=b.dataset.remtog;
-    S.reminders[k]={time:S.reminders[k]?.time||'08:00',enabled:!S.reminders[k]?.enabled};
-    ls.set('ritual:reminders',S.reminders);scheduleNotifs();renderReminders();
-  }));
-  el.querySelectorAll('[data-remtime]').forEach(inp=>inp.addEventListener('change',()=>{
-    const k=inp.dataset.remtime;
-    if(!S.reminders[k])S.reminders[k]={enabled:true};
-    S.reminders[k].time=inp.value;
-    ls.set('ritual:reminders',S.reminders);scheduleNotifs();
-  }));
+  // Events
+  var an=ge('allowNotif');if(an)an.addEventListener('click',function(){Notification.requestPermission().then(function(){renderAlerts();});});
 
-  // Export
-  document.getElementById('exportBtn')?.addEventListener('click',exportData);
+  el.querySelectorAll('[data-tog]').forEach(function(b){b.addEventListener('click',function(){
+    var k=b.dataset.tog;S.reminders[k]={time:(S.reminders[k]&&S.reminders[k].time)||'08:00',enabled:!(S.reminders[k]&&S.reminders[k].enabled)};
+    ls.set('ritual:reminders',S.reminders);scheduleNotifs();renderAlerts();
+  });});
+  el.querySelectorAll('[data-rt]').forEach(function(inp){inp.addEventListener('change',function(){
+    var k=inp.dataset.rt;if(!S.reminders[k])S.reminders[k]={enabled:true};
+    S.reminders[k].time=inp.value;ls.set('ritual:reminders',S.reminders);scheduleNotifs();
+  });});
 
-  // Import
-  document.getElementById('importBtn')?.addEventListener('click',()=>document.getElementById('importFile')?.click());
-  document.getElementById('importFile')?.addEventListener('change',e=>{
-    const file=e.target.files[0];if(!file)return;
-    const reader=new FileReader();
-    reader.onload=ev=>{
+  var expBtn=ge('exportBtn');if(expBtn)expBtn.addEventListener('click',doExport);
+  var impBtn=ge('importBtn');if(impBtn)impBtn.addEventListener('click',function(){var f=ge('importFile');if(f)f.click();});
+  var impFile=ge('importFile');if(impFile)impFile.addEventListener('change',function(e){
+    var file=e.target.files[0];if(!file)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
       try{
-        const parsed=JSON.parse(ev.target.result);
-        const entries=parsed.entries||parsed;
+        var parsed=JSON.parse(ev.target.result);
+        var entries=parsed.entries||parsed;
         if(typeof entries!=='object'||Array.isArray(entries))throw new Error('Invalid format');
-        const dates=Object.keys(entries);
-        dates.forEach(d=>{ls.set('ritual:'+d,entries[d]);});
-        const existing=ls.get('ritual:index')||[];
-        const merged=[...new Set([...existing,...dates])].sort();
-        ls.set('ritual:index',merged);
-        // Reload state
-        const all={};merged.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
-        S.all=all;
-        if(all[S.selDate])S.entry=JSON.parse(JSON.stringify(all[S.selDate]));
-        renderProgBar();showToast(`Imported ${dates.length} days ✅`);
-      }catch(err){showToast('Import failed: '+err.message);}
+        var newDates=Object.keys(entries);
+        newDates.forEach(function(d){ls.set('ritual:'+d,entries[d]);});
+        var existing=ls.get('ritual:index')||[];
+        var merged=[];var seen={};existing.concat(newDates).forEach(function(d){if(!seen[d]){seen[d]=true;merged.push(d);}});
+        merged.sort();ls.set('ritual:index',merged);
+        merged.forEach(function(d){var e=ls.get('ritual:'+d);if(e)S.all[d]=e;});
+        renderProgBar();toast('Imported '+newDates.length+' days ✅');
+      }catch(err){toast('Import failed: '+esc(err.message));}
     };
     reader.readAsText(file);
   });
 
-  // Google Drive setup
-  document.getElementById('saveGClientId')?.addEventListener('click',()=>{
-    const v=(document.getElementById('gClientIdInp')?.value||'').trim();
-    if(!v)return;
-    ls.set('ritual:gclientid',v);showToast('Client ID saved!');renderReminders();
+  var sgId=ge('saveGId');if(sgId)sgId.addEventListener('click',function(){
+    var v=(ge('gIdInp')?ge('gIdInp').value:'').trim();if(!v)return;
+    ls.set('ritual:gclientid',v);toast('Client ID saved!');renderAlerts();
   });
-  document.getElementById('clearGClientId')?.addEventListener('click',()=>{
+  var cgId=ge('clearGId');if(cgId)cgId.addEventListener('click',function(){
     ls.set('ritual:gclientid','');ls.set('ritual:gfileid','');ls.set('ritual:glastsync','');
-    S.gToken=null;renderReminders();
+    S.gToken=null;renderAlerts();
   });
-  document.getElementById('gdriveSyncBtn')?.addEventListener('click',gdrivePush);
-  document.getElementById('gdriveRestoreBtn')?.addEventListener('click',gdrivePull);
+  var dp=ge('drivePush');if(dp)dp.addEventListener('click',gdrivePush);
+  var dpl=ge('drivePull');if(dpl)dpl.addEventListener('click',gdrivePull);
 }
 
-// ── Export helper ──────────────────────────────────────────────────────────────
-function exportData(){
-  const dates=ls.get('ritual:index')||[];
-  const all={};dates.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
-  const blob=new Blob([JSON.stringify({entries:all,exported:new Date().toISOString()},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='ritual-backup-'+TODAY+'.json';a.click();
+// ─── Export / Import ──────────────────────────────────────────────────────────
+function doExport(){
+  var dates=ls.get('ritual:index')||[];
+  var all={};dates.forEach(function(d){var e=ls.get('ritual:'+d);if(e)all[d]=e;});
+  var blob=new Blob([JSON.stringify({entries:all,exported:new Date().toISOString()},null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ritual-backup-'+TODAY+'.json';a.click();
 }
 
-// ── Google Drive ──────────────────────────────────────────────────────────────
+// ─── Google Drive ─────────────────────────────────────────────────────────────
 function loadGIS(cb){
-  if(window.google?.accounts){cb();return;}
-  const s=document.createElement('script');
-  s.src='https://accounts.google.com/gsi/client';
-  s.onload=cb;s.onerror=()=>showToast('Failed to load Google Sign-In — check internet');
+  if(window.google&&window.google.accounts){cb();return;}
+  var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';
+  s.onload=cb;s.onerror=function(){toast('Failed to load Google Sign-In — check internet');};
   document.head.appendChild(s);
 }
-
 function getGToken(cb){
-  const clientId=ls.get('ritual:gclientid');
-  if(!clientId){showToast('Enter your Google Client ID first');return;}
-  loadGIS(()=>{
+  var clientId=ls.get('ritual:gclientid');if(!clientId){toast('Enter your Google Client ID first');return;}
+  loadGIS(function(){
     try{
-      const client=google.accounts.oauth2.initTokenClient({
-        client_id:clientId,
-        scope:'https://www.googleapis.com/auth/drive.appdata',
-        callback:resp=>{
-          if(resp.access_token){S.gToken=resp.access_token;cb(resp.access_token);}
-          else showToast('Google sign-in failed');
-        }
+      var client=google.accounts.oauth2.initTokenClient({
+        client_id:clientId,scope:'https://www.googleapis.com/auth/drive.appdata',
+        callback:function(resp){if(resp.access_token){S.gToken=resp.access_token;cb(resp.access_token);}else toast('Google sign-in failed');}
       });
       client.requestAccessToken();
-    }catch(e){showToast('Google error: '+e.message);}
+    }catch(e){toast('Google error: '+e.message);}
   });
 }
-
-async function gdriveGetFileId(token){
-  // Look for existing backup file
-  const stored=ls.get('ritual:gfileid');
-  if(stored)return stored;
-  const r=await fetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D'daily-ritual-data.json'",
-    {headers:{Authorization:'Bearer '+token}});
-  const j=await r.json();
-  if(j.files&&j.files.length>0){
-    ls.set('ritual:gfileid',j.files[0].id);return j.files[0].id;
-  }
-  return null;
+function gGetFileId(token,cb){
+  var stored=ls.get('ritual:gfileid');if(stored){cb(stored);return;}
+  fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D%22daily-ritual-data.json%22',{headers:{Authorization:'Bearer '+token}})
+    .then(function(r){return r.json();}).then(function(j){
+      if(j.files&&j.files.length>0){ls.set('ritual:gfileid',j.files[0].id);cb(j.files[0].id);}else cb(null);
+    }).catch(function(){cb(null);});
 }
-
-async function gdrivePush(){
-  showToast('Connecting to Google Drive...');
-  getGToken(async token=>{
-    try{
-      const dates=ls.get('ritual:index')||[];
-      const all={};dates.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
-      const body=JSON.stringify({entries:all,saved:new Date().toISOString()});
-      const fileId=await gdriveGetFileId(token);
-      let res;
+function gdrivePush(){
+  toast('Connecting to Google Drive...');
+  getGToken(function(token){
+    var dates=ls.get('ritual:index')||[];var all={};
+    dates.forEach(function(d){var e=ls.get('ritual:'+d);if(e)all[d]=e;});
+    var body=JSON.stringify({entries:all,saved:new Date().toISOString()});
+    gGetFileId(token,function(fileId){
+      var p;
       if(fileId){
-        // Update existing
-        res=await fetch('https://www.googleapis.com/upload/drive/v3/files/'+fileId+'?uploadType=media',
-          {method:'PATCH',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body});
+        p=fetch('https://www.googleapis.com/upload/drive/v3/files/'+fileId+'?uploadType=media',{method:'PATCH',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:body});
       }else{
-        // Create new in appDataFolder
-        const meta={name:'daily-ritual-data.json',parents:['appDataFolder']};
-        const form=new FormData();
+        var meta={name:'daily-ritual-data.json',parents:['appDataFolder']};
+        var form=new FormData();
         form.append('metadata',new Blob([JSON.stringify(meta)],{type:'application/json'}));
         form.append('file',new Blob([body],{type:'application/json'}));
-        res=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
-          {method:'POST',headers:{Authorization:'Bearer '+token},body:form});
-        const nj=await res.json();
-        if(nj.id)ls.set('ritual:gfileid',nj.id);
+        p=fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{Authorization:'Bearer '+token},body:form});
       }
-      if(res.ok){
-        const now=new Date().toISOString();ls.set('ritual:glastsync',now);
-        showToast('Synced to Google Drive ☁️✅');renderReminders();
-      }else{
-        const ej=await res.json().catch(()=>({}));
-        showToast('Drive error: '+(ej?.error?.message||res.status));
-      }
-    }catch(e){showToast('Sync failed: '+e.message);}
+      p.then(function(res){
+        if(res.ok){
+          if(!fileId)res.json().then(function(j){if(j.id)ls.set('ritual:gfileid',j.id);});
+          var now=new Date().toISOString();ls.set('ritual:glastsync',now);
+          toast('Synced to Google Drive ✅');renderAlerts();
+        }else{res.json().then(function(j){toast('Drive error: '+(j&&j.error&&j.error.message||res.status));});}
+      }).catch(function(e){toast('Sync failed: '+e.message);});
+    });
+  });
+}
+function gdrivePull(){
+  toast('Fetching from Google Drive...');
+  getGToken(function(token){
+    gGetFileId(token,function(fileId){
+      if(!fileId){toast('No backup found in Drive');return;}
+      fetch('https://www.googleapis.com/drive/v3/files/'+fileId+'?alt=media',{headers:{Authorization:'Bearer '+token}})
+        .then(function(r){return r.json();}).then(function(parsed){
+          var entries=parsed.entries||parsed;var newDates=Object.keys(entries);
+          newDates.forEach(function(d){ls.set('ritual:'+d,entries[d]);});
+          var existing=ls.get('ritual:index')||[];var seen={};var merged=[];
+          existing.concat(newDates).forEach(function(d){if(!seen[d]){seen[d]=true;merged.push(d);}});
+          merged.sort();ls.set('ritual:index',merged);
+          merged.forEach(function(d){var e=ls.get('ritual:'+d);if(e)S.all[d]=e;});
+          if(S.all[S.selDate])S.entry=JSON.parse(JSON.stringify(S.all[S.selDate]));
+          renderProgBar();toast('Restored '+newDates.length+' days from Drive ✅');
+        }).catch(function(e){toast('Restore failed: '+e.message);});
+    });
   });
 }
 
-async function gdrivePull(){
-  showToast('Fetching from Google Drive...');
-  getGToken(async token=>{
-    try{
-      const fileId=await gdriveGetFileId(token);
-      if(!fileId){showToast('No backup found in Drive');return;}
-      const res=await fetch('https://www.googleapis.com/drive/v3/files/'+fileId+'?alt=media',
-        {headers:{Authorization:'Bearer '+token}});
-      if(!res.ok){showToast('Could not read Drive file');return;}
-      const parsed=await res.json();
-      const entries=parsed.entries||parsed;
-      const dates=Object.keys(entries);
-      dates.forEach(d=>ls.set('ritual:'+d,entries[d]));
-      const existing=ls.get('ritual:index')||[];
-      const merged=[...new Set([...existing,...dates])].sort();
-      ls.set('ritual:index',merged);
-      const all={};merged.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
-      S.all=all;
-      if(all[S.selDate])S.entry=JSON.parse(JSON.stringify(all[S.selDate]));
-      renderProgBar();showToast('Restored '+dates.length+' days from Drive ✅');
-    }catch(e){showToast('Restore failed: '+e.message);}
-  });
-}
-
-// ── Notifications ─────────────────────────────────────────────────────────────
+// ─── Notifications ────────────────────────────────────────────────────────────
 function scheduleNotifs(){
-  S.timers.forEach(clearTimeout);S.timers=[];
+  S.timers.forEach(function(t){clearTimeout(t);});S.timers=[];
   if(typeof Notification==='undefined'||Notification.permission!=='granted')return;
-  Object.entries(S.reminders).forEach(([k,r])=>{
-    if(!r?.enabled||!r?.time)return;
-    const[hh,mm]=r.time.split(':').map(Number);
-    const now=new Date(),fire=new Date();
-    fire.setHours(hh,mm,0,0);if(fire<=now)fire.setDate(fire.getDate()+1);
-    const sec=REMS.find(x=>x.key===k);
-    S.timers.push(setTimeout(()=>{
-      try{new Notification('Daily Ritual · '+(sec?.label||k),{body:'Time for your '+(sec?.label||k)+'!'});}catch{}
+  Object.keys(S.reminders).forEach(function(k){
+    var r=S.reminders[k];if(!r||!r.enabled||!r.time)return;
+    var parts=r.time.split(':');var hh=+parts[0];var mm=+parts[1];
+    var now=new Date();var fire=new Date();fire.setHours(hh,mm,0,0);
+    if(fire<=now)fire.setDate(fire.getDate()+1);
+    var sec=null;for(var i=0;i<REMS.length;i++){if(REMS[i].key===k){sec=REMS[i];break;}}
+    S.timers.push(setTimeout(function(){
+      try{new Notification('Daily Ritual · '+(sec?sec.label:k),{body:'Time for your '+(sec?sec.label:k)+'!'});}catch(e){}
     },fire-now));
   });
 }
 
-// ── Date navigation ───────────────────────────────────────────────────────────
+// ─── Date navigation ──────────────────────────────────────────────────────────
 function changeDate(newDate){
   if(newDate>TODAY)return;
   S.selDate=newDate;
@@ -1077,7 +927,7 @@ function changeDate(newDate){
   renderHeader();renderProgBar();renderSecTabs();renderSection();renderBotBtns();
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────────
+// ─── Init ─────────────────────────────────────────────────────────────────────
 function init(){
   loadAll();
   renderHeader();
@@ -1087,20 +937,11 @@ function init(){
   renderBotBtns();
   scheduleNotifs();
 
-  // Nav buttons
-  document.getElementById('navPrev').addEventListener('click',()=>{
-    const d=new Date(S.selDate+'T12:00:00');d.setDate(d.getDate()-1);changeDate(toDS(d));
-  });
-  document.getElementById('navNext').addEventListener('click',()=>{
-    const d=new Date(S.selDate+'T12:00:00');d.setDate(d.getDate()+1);changeDate(toDS(d));
-  });
-  document.getElementById('todayBtn').addEventListener('click',()=>changeDate(TODAY));
-  document.getElementById('datePicker').addEventListener('change',e=>{
-    if(e.target.value)changeDate(e.target.value);
-  });
-
-  // Bottom nav
-  document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+  ge('navPrev').addEventListener('click',function(){var d=new Date(S.selDate+'T12:00:00');d.setDate(d.getDate()-1);changeDate(toDS(d));});
+  ge('navNext').addEventListener('click',function(){var d=new Date(S.selDate+'T12:00:00');d.setDate(d.getDate()+1);changeDate(toDS(d));});
+  ge('todayBtn').addEventListener('click',function(){changeDate(TODAY);});
+  ge('datePicker').addEventListener('change',function(e){if(e.target.value)changeDate(e.target.value);});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.addEventListener('click',function(){switchTab(b.dataset.tab);});});
 }
 
 document.addEventListener('DOMContentLoaded',init);
