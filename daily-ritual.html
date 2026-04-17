@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Daily Ritual">
+<meta name="theme-color" content="#2d4a3e">
+<title>Daily Ritual</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none}
+body{background:#faf6f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1e1408}
+#app{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden}
+.hdr{background:#2d4a3e;padding:22px 16px 14px;flex-shrink:0;width:100%}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.hdr-center{text-align:center;flex:1}
+.hdr-date{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#86b89a}
+.hdr-title{font-size:20px;font-weight:700;color:white;font-family:Georgia,serif;line-height:1.2}
+.hdr-btns{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:3px}
+.hdr-nav{width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;background:rgba(255,255,255,.15);color:white;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr-nav:disabled{background:transparent;color:transparent;cursor:default}
+.prog-bar{display:flex;gap:5px;margin-top:4px}
+.prog-seg{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.18);transition:background .4s}
+.prog-seg.done{background:#e07b5a}
+.hdr-sub{font-size:11px;color:#86b89a;margin-top:5px;text-align:center}
+.pick-btn{font-size:11px;color:#86b89a;background:rgba(255,255,255,.12);border-radius:8px;padding:3px 9px;cursor:pointer;position:relative;display:inline-flex;border:none}
+.pick-btn input[type=date]{position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer}
+.today-btn{font-size:10px;color:#e07b5a;border:none;background:none;cursor:pointer}
+.content{flex:1;overflow-y:auto;overflow-x:hidden;width:100%;min-height:0}
+.tab-panel{width:100%;display:none}
+.tab-panel.active{display:block}
+.pad{padding:16px;width:100%}
+.nav-bar{display:flex;border-top:1px solid #e8e0d4;background:white;flex-shrink:0;width:100%}
+.nav-btn{flex:1;padding:11px 0 9px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#9ca3af;font-family:inherit}
+.nav-btn.active{color:#2d4a3e}
+.nav-icon{font-size:21px}
+.nav-label{font-size:11px;font-weight:400}
+.nav-btn.active .nav-label{font-weight:600}
+/* Section tabs */
+.sec-tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}
+.sec-tabs::-webkit-scrollbar{display:none}
+.sec-tab{flex-shrink:0;padding:7px 12px;border-radius:20px;border:none;background:#ede9e3;color:#8a7968;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit}
+.sec-tab.active{background:#2d4a3e;color:white}
+/* Cards */
+.card{background:white;border-radius:24px;padding:20px;box-shadow:0 2px 16px rgba(45,74,62,.08);border:1px solid #e8e0d4;min-height:300px}
+.streak-card{background:white;border-radius:20px;padding:16px;margin-bottom:12px;border:1px solid #e8e0d4}
+.chart-card{background:white;border-radius:20px;padding:16px;margin-bottom:12px;border:1px solid #e8e0d4}
+/* Form elements */
+.lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a7968;margin-bottom:5px}
+.inp{width:100%;padding:9px 12px;border-radius:12px;border:1px solid #e8e0d4;background:#faf6f0;color:#1e1408;font-size:14px;outline:none;font-family:inherit}
+.inp:focus{border-color:#6aaa8a}
+.txa{width:100%;padding:9px 12px;border-radius:12px;border:1px solid #e8e0d4;background:#faf6f0;color:#1e1408;font-size:14px;outline:none;resize:none;font-family:inherit}
+.chip{padding:6px 12px;border-radius:20px;border:none;background:#ede9e3;color:#8a7968;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0;font-family:inherit}
+.chip.on{background:#2d4a3e;color:white}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:20px;font-size:18px;font-weight:600;color:#1e1408;font-family:Georgia,serif}
+/* Skin */
+.step-btn{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:13px;border:2px solid #e8e0d4;background:white;color:#8a7968;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;width:100%}
+.step-btn.on{border-color:#2d4a3e;background:#f0f7f2;color:#2d4a3e}
+.skin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.ampm-toggle{display:flex;background:#ede9e3;border-radius:16px;padding:4px;margin-bottom:18px;gap:4px}
+.ampm-btn{flex:1;padding:9px 0;border-radius:13px;border:none;cursor:pointer;background:transparent;color:#8a7968;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
+.ampm-btn.on{background:#2d4a3e;color:white}
+.ampm-badge{background:#6aaa8a;color:white;font-size:10px;border-radius:8px;padding:1px 6px}
+.ampm-badge.active{background:rgba(255,255,255,.3)}
+/* Gym */
+.gym-block{background:#faf6f0;border-radius:16px;padding:14px;margin-bottom:12px;border:1px solid #e8e0d4}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+/* Speak */
+.speak-wrap{text-align:center;padding:40px 0}
+.speak-btn{width:140px;height:140px;border-radius:50%;border:4px solid #e8e0d4;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:52px;color:#8a7968;margin:0 auto;transition:all .25s}
+.speak-btn.done{border-color:#2d4a3e;background:#2d4a3e;color:white;box-shadow:0 0 0 10px #f0f7f2}
+/* Todos */
+.todo-item{background:white;border-radius:16px;border:1.5px solid #e8e0d4;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.todo-item.done{border-color:#6aaa8a}
+.todo-row{display:flex;align-items:center;gap:10px;padding:13px 14px}
+.todo-check{width:22px;height:22px;border-radius:50%;border:2px solid #e8e0d4;background:white;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:white}
+.todo-check.done{background:#2d4a3e;border-color:#2d4a3e}
+.todo-text{flex:1;font-size:14px;line-height:1.4}
+.todo-text.done{color:#8a7968;text-decoration:line-through}
+.todo-exp{font-size:11px;color:#8a7968;border:none;background:none;cursor:pointer;padding:0 4px;flex-shrink:0;font-family:inherit}
+.todo-del{font-size:16px;color:#ef4444;border:none;background:none;cursor:pointer;flex-shrink:0}
+.todo-subs{border-top:1px solid #e8e0d4;padding:10px 14px 14px;background:#faf6f0}
+.sub-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;padding-left:8px}
+.sub-line{width:14px;border-top:1.5px dashed #e8e0d4;flex-shrink:0}
+.sub-check{width:17px;height:17px;border-radius:4px;border:2px solid #e8e0d4;background:white;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:white}
+.sub-check.done{background:#6aaa8a;border-color:#6aaa8a}
+.sub-text{flex:1;font-size:13px}
+.sub-text.done{color:#8a7968;text-decoration:line-through}
+/* Breakout */
+.brk-btn{flex:1;padding:11px;border-radius:14px;font-size:13px;font-weight:500;cursor:pointer;border:2px solid #e8e0d4;background:white;color:#8a7968;font-family:inherit}
+.brk-btn.yes.on{border-color:#ef4444;background:#fef2f2;color:#b91c1c}
+.brk-btn.no.on{border-color:#2d4a3e;background:#f0f7f2;color:#2d4a3e}
+/* Nav buttons */
+.bot-btns{display:flex;gap:10px;margin-top:14px}
+.btn-back{flex:1;padding:14px;border-radius:16px;border:1px solid #e8e0d4;background:white;color:#8a7968;font-size:14px;cursor:pointer;font-family:inherit}
+.btn-next{flex:1;padding:14px;border-radius:16px;border:none;background:#2d4a3e;color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-save{flex:1;padding:14px;border-radius:16px;border:none;background:#6aaa8a;color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-save.dirty{background:#e07b5a}
+/* Add input row */
+.add-row{display:flex;gap:8px;margin-top:4px}
+.add-inp{flex:1;padding:11px 14px;border-radius:14px;border:1px dashed #e8e0d4;background:#faf6f0;color:#1e1408;font-size:14px;outline:none;font-family:inherit}
+.add-btn{padding:11px 18px;border-radius:14px;border:none;background:#2d4a3e;color:white;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit}
+/* Insights */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:white;border-radius:16px;padding:12px;text-align:center;border:1px solid #e8e0d4}
+.stat-val{font-size:24px;font-weight:700;color:#2d4a3e}
+.stat-lbl{font-size:10px;color:#8a7968;margin-top:3px}
+/* AI */
+.ai-card{background:linear-gradient(135deg,#2d4a3e,#3d6b58);border-radius:20px;padding:20px;margin-top:12px;color:white}
+.ai-title{font-size:15px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.ai-sub{font-size:12px;opacity:.75;margin-bottom:16px;line-height:1.5}
+.ai-btn{width:100%;padding:13px;border-radius:14px;border:none;background:rgba(255,255,255,.15);color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s}
+.ai-btn:disabled{opacity:.5;cursor:default}
+.ai-result{margin-top:16px;font-size:13px;line-height:1.7;opacity:.95;white-space:pre-wrap}
+.ai-loading{display:flex;align-items:center;gap:8px;font-size:13px;opacity:.8;margin-top:16px}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:white;animation:blink 1.2s infinite}
+.ai-dot:nth-child(2){animation-delay:.2s}
+.ai-dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.ai-key-row{display:flex;gap:8px;margin-bottom:14px}
+.ai-key-inp{flex:1;padding:9px 12px;border-radius:12px;border:none;background:rgba(255,255,255,.15);color:white;font-size:13px;outline:none;font-family:inherit}
+.ai-key-inp::placeholder{color:rgba(255,255,255,.5)}
+.ai-key-save{padding:9px 14px;border-radius:12px;border:none;background:rgba(255,255,255,.2);color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
+/* Rem */
+.rem-row{background:white;border-radius:18px;padding:14px 16px;margin-bottom:10px;border:1px solid #e8e0d4;display:flex;align-items:center;gap:12px}
+.toggle{width:46px;height:26px;border-radius:13px;border:none;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
+.toggle-knob{width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+/* Toast */
+#toast{position:fixed;top:115px;left:50%;transform:translateX(-50%);background:#2d4a3e;color:white;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:500;z-index:999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);display:none}
+/* Restless */
+.rest-dots{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.rest-dot{width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0}
+/* Info box */
+.info-box{background:#f0f7f2;border-radius:14px;padding:12px;margin-bottom:16px;font-size:12px;color:#8a7968;line-height:1.6}
+.data-box{background:#f0f7f2;border-radius:16px;padding:16px;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-row">
+      <button class="hdr-nav" id="navPrev">&#8249;</button>
+      <div class="hdr-center">
+        <div class="hdr-date" id="hdrDate"></div>
+        <div class="hdr-title">Daily Ritual</div>
+        <div class="hdr-btns">
+          <button class="today-btn" id="todayBtn" style="display:none">→ Today</button>
+          <label class="pick-btn">📅 Pick date<input type="date" id="datePicker"></label>
+        </div>
+      </div>
+      <button class="hdr-nav" id="navNext">&#8250;</button>
+    </div>
+    <div class="prog-bar" id="progBar"></div>
+    <div class="hdr-sub" id="hdrSub"></div>
+  </div>
+
+  <div id="toast"></div>
+
+  <div class="content">
+    <!-- LOG TAB -->
+    <div class="tab-panel active pad" id="panel-log">
+      <div class="sec-tabs" id="secTabs"></div>
+      <div class="card" id="secCard"></div>
+      <div class="bot-btns" id="botBtns"></div>
+    </div>
+    <!-- STREAKS TAB -->
+    <div class="tab-panel pad" id="panel-streaks">
+      <div id="streaksContent"></div>
+    </div>
+    <!-- INSIGHTS TAB -->
+    <div class="tab-panel pad" id="panel-insights">
+      <div id="insightsContent"></div>
+    </div>
+    <!-- ALERTS TAB -->
+    <div class="tab-panel pad" id="panel-reminders">
+      <div id="remindersContent"></div>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn active" data-tab="log"><span class="nav-icon">📓</span><span class="nav-label">Log</span></button>
+    <button class="nav-btn" data-tab="streaks"><span class="nav-icon">🔥</span><span class="nav-label">Streaks</span></button>
+    <button class="nav-btn" data-tab="insights"><span class="nav-icon">📊</span><span class="nav-label">Insights</span></button>
+    <button class="nav-btn" data-tab="reminders"><span class="nav-icon">🔔</span><span class="nav-label">Alerts</span></button>
+  </div>
+</div>
+
+<script>
+// ── Constants ─────────────────────────────────────────────────────────────────
+const C={green:'#2d4a3e',orange:'#e07b5a',mint:'#6aaa8a',muted:'#8a7968',tan:'#c9a96e',border:'#e8e0d4',light:'#f0f7f2'};
+const MUSCLE=['Chest','Back','Legs','Shoulders','Arms','Core','Full Body','Cardio'];
+const MED_M=['Breathing','Body Scan','Visualization','Mantra','Open Awareness','Guided'];
+const RLBL=['','Perfectly still','Very calm','Mostly calm','Light thoughts','Some thoughts','Wandering mind','Often distracted','Restless','Very restless',"Couldn't focus"];
+const HABITS=[
+  {key:'meditation',label:'Meditation',icon:'🧘',check:e=>parseFloat(e?.meditation?.time)>0},
+  {key:'read',label:'Reading',icon:'📚',check:e=>(e?.read?.notes||e?.read?.title||'').trim().length>3},
+  {key:'skin',label:'Skin Care',icon:'✨',check:e=>{const s=e?.skin;if(!s)return false;const ck=sl=>sl&&(['moisturiser','cleanse','sunscreen','exfoliate'].some(k=>sl[k])||(sl._custom||[]).some(c=>sl[c.key]));return ck(s.am)||ck(s.pm);}},
+  {key:'gym',label:'Gym',icon:'💪',check:e=>e?.gym?.some(g=>g.exercise?.trim())},
+  {key:'speak',label:'Speaking',icon:'🗣️',check:e=>e?.speak===true}
+];
+const SECTIONS=['Meditation','Reading','Skin Care','Gym','Speaking','To-Dos'];
+const SEC_ICONS=['🧘','📚','✨','💪','🗣️','✅'];
+const REMS=[{key:'meditation',label:'Meditation',icon:'🧘'},{key:'read',label:'Reading',icon:'📚'},
+            {key:'skin',label:'Skin Care',icon:'✨'},{key:'gym',label:'Gym',icon:'💪'},
+            {key:'speak',label:'Speaking',icon:'🗣️'},{key:'todos',label:'To-Dos',icon:'✅'}];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+const toDS=d=>d.toISOString().slice(0,10);
+const TODAY=toDS(new Date());
+const daysAgo=n=>{const d=new Date();d.setDate(d.getDate()-n);return toDS(d);};
+const uid=()=>Math.random().toString(36).slice(2,8);
+const fmtDate=s=>new Date(s+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+const shortD=s=>{const[,m,d]=s.split('-');return`${+m}/${+d}`;};
+
+function newGym(){return{muscle:'',exercise:'',weight:'',reps:'',sets:'',note:''};}
+function newEntry(){return{
+  meditation:{time:'',method:'',laps:'',restlessness:0,note:''},
+  read:{title:'',notes:''},
+  skin:{am:{moisturiser:false,cleanse:false,sunscreen:false,_custom:[]},
+        pm:{moisturiser:false,cleanse:false,exfoliate:false,_custom:[]},breakout:null},
+  gym:[newGym()],speak:false,todos:[]
+};}
+
+let S={
+  selDate:TODAY,tab:'log',sec:0,
+  entry:newEntry(),dirty:false,
+  all:{},reminders:{},skinPeriod:{},
+  timers:[]
+};
+
+// ── LocalStorage ──────────────────────────────────────────────────────────────
+const ls={
+  get:k=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}},
+  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+};
+
+function loadAll(){
+  const dates=ls.get('ritual:index')||[];
+  const all={};
+  dates.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
+  S.all=all;
+  S.reminders=ls.get('ritual:reminders')||{};
+  if(all[TODAY])S.entry=all[TODAY];
+}
+
+function saveEntry(){
+  ls.set('ritual:'+S.selDate,S.entry);
+  const dates=ls.get('ritual:index')||[];
+  if(!dates.includes(S.selDate))ls.set('ritual:index',[...dates,S.selDate]);
+  S.all={...S.all,[S.selDate]:S.entry};
+  S.dirty=false;
+  showToast('Saved! 🌿');
+  renderHeader();renderProgBar();renderBotBtns();
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.style.display='none',2500);
+}
+
+// ── Streaks ───────────────────────────────────────────────────────────────────
+function calcStreak(key){
+  const h=HABITS.find(x=>x.key===key);if(!h)return 0;
+  let n=0;const td=S.all[TODAY]&&h.check(S.all[TODAY]);
+  for(let d=td?0:1;d<365;d++){const e=S.all[daysAgo(d)];if(!e||!h.check(e))break;n++;}
+  return n;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+function renderHeader(){
+  const isToday=S.selDate===TODAY;
+  document.getElementById('hdrDate').textContent=fmtDate(S.selDate);
+  document.getElementById('navNext').disabled=isToday;
+  document.getElementById('todayBtn').style.display=isToday?'none':'inline';
+  document.getElementById('datePicker').value=S.selDate;
+  document.getElementById('datePicker').max=TODAY;
+}
+function renderProgBar(){
+  const bar=document.getElementById('progBar');
+  bar.innerHTML=HABITS.map(h=>`<div class="prog-seg${S.all[S.selDate]&&h.check(S.all[S.selDate])?' done':''}"></div>`).join('');
+  const done=HABITS.filter(h=>S.all[S.selDate]&&h.check(S.all[S.selDate])).length;
+  document.getElementById('hdrSub').textContent=done+'/5 habits done';
+}
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function switchTab(tab){
+  S.tab=tab;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+tab));
+  if(tab==='streaks')renderStreaks();
+  if(tab==='insights')renderInsights();
+  if(tab==='reminders')renderReminders();
+}
+
+// ── Log view ──────────────────────────────────────────────────────────────────
+function renderSecTabs(){
+  const el=document.getElementById('secTabs');
+  el.innerHTML=SECTIONS.map((s,i)=>`<button class="sec-tab${S.sec===i?' active':''}" data-si="${i}">${SEC_ICONS[i]} ${s}</button>`).join('');
+  el.querySelectorAll('.sec-tab').forEach(b=>b.addEventListener('click',()=>{S.sec=+b.dataset.si;renderSection();renderBotBtns();}));
+}
+function renderBotBtns(){
+  const el=document.getElementById('botBtns');
+  let h='';
+  if(S.sec>0)h+=`<button class="btn-back" id="btnBack">← Back</button>`;
+  if(S.sec<5)h+=`<button class="btn-next" id="btnNext">Next →</button>`;
+  else h+=`<button class="btn-save${S.dirty?' dirty':''}" id="btnSave">${S.dirty?'💾 Save Day':'✓ Saved!'}</button>`;
+  el.innerHTML=h;
+  document.getElementById('btnBack')?.addEventListener('click',()=>{S.sec--;renderSecTabs();renderSection();renderBotBtns();});
+  document.getElementById('btnNext')?.addEventListener('click',()=>{S.sec++;renderSecTabs();renderSection();renderBotBtns();});
+  document.getElementById('btnSave')?.addEventListener('click',saveEntry);
+}
+
+function renderSection(){
+  const card=document.getElementById('secCard');
+  if(S.sec===0)card.innerHTML=renderMed();
+  else if(S.sec===1)card.innerHTML=renderRead();
+  else if(S.sec===2)card.innerHTML=renderSkin();
+  else if(S.sec===3)card.innerHTML=renderGym();
+  else if(S.sec===4)card.innerHTML=renderSpeak();
+  else if(S.sec===5)card.innerHTML=renderTodos();
+  attachSection();
+}
+
+// ── MEDITATION ────────────────────────────────────────────────────────────────
+function renderMed(){
+  const m=S.entry.meditation;
+  const dots=[1,2,3,4,5,6,7,8,9,10].map(i=>{
+    let bg=i<=m.restlessness?(i<=3?C.mint:i<=6?C.tan:C.orange):'#e8e0d4';
+    return`<button class="rest-dot" data-rv="${i}" style="background:${bg}"></button>`;
+  }).join('');
+  return`
+    <div class="sec-hdr">🧘 Meditation</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div><div class="lbl">Duration (min)</div><input class="inp" type="number" id="medTime" value="${m.time}" placeholder="20"></div>
+      <div><div class="lbl">Laps / Rounds</div><input class="inp" type="number" id="medLaps" value="${m.laps}" placeholder="3"></div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="lbl">Method</div>
+      <div class="chips">${MED_M.map(x=>`<button class="chip${m.method===x?' on':''}" data-mm="${x}">${x}</button>`).join('')}</div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="lbl">Restlessness · 1 = calm, 10 = restless</div>
+      <div class="rest-dots">${dots}</div>
+      ${m.restlessness>0?`<div style="font-size:12px;color:${C.muted};margin-top:6px">${m.restlessness}/10 — ${RLBL[m.restlessness]}</div>`:''}
+    </div>
+    <div class="lbl">Note</div>
+    <textarea class="txa" id="medNote" rows="2" placeholder="How was your session?">${m.note}</textarea>`;
+}
+
+// ── READING ───────────────────────────────────────────────────────────────────
+function renderRead(){
+  const r=S.entry.read;
+  return`
+    <div class="sec-hdr">📚 Reading</div>
+    <div style="margin-bottom:14px">
+      <div class="lbl">What did you read?</div>
+      <input class="inp" id="readTitle" value="${esc(r.title)}" placeholder="Book title, article, author...">
+    </div>
+    <div class="lbl">Notes & key ideas</div>
+    <textarea class="txa" id="readNotes" rows="8" placeholder="Key insights, quotes, reflections...">${esc(r.notes)}</textarea>`;
+}
+
+// ── SKIN ──────────────────────────────────────────────────────────────────────
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+function renderSkinSlot(slotKey){
+  const slot=S.entry.skin[slotKey]||{};
+  const isAm=slotKey==='am';
+  const steps=isAm?
+    [{key:'cleanse',label:'Cleanse',icon:'💧'},{key:'moisturiser',label:'Moisturise',icon:'🧴'},{key:'sunscreen',label:'Sunscreen',icon:'☀️'}]:
+    [{key:'cleanse',label:'Cleanse',icon:'💧'},{key:'moisturiser',label:'Moisturise',icon:'🧴'},{key:'exfoliate',label:'Exfoliate',icon:'✨'}];
+  const custom=slot._custom||[];
+  let btns=steps.map(s=>`<button class="step-btn${slot[s.key]?' on':''}" data-slot="${slotKey}" data-sk="${s.key}"><span>${s.icon}</span>${s.label}</button>`).join('');
+  custom.forEach(s=>{btns+=`<div style="position:relative"><button class="step-btn${slot[s.key]?' on':''}" data-slot="${slotKey}" data-sk="${s.key}"><span>🌿</span>${esc(s.label)}</button><button class="todo-del" style="position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;background:#ef4444;border:2px solid white;color:white;font-size:11px;display:flex;align-items:center;justify-content:center" data-slot="${slotKey}" data-rk="${s.key}">×</button></div>`;});
+  return`<div class="skin-grid">${btns}</div>
+    <div style="display:flex;gap:7px">
+      <input class="inp" id="skinNewStep_${slotKey}" placeholder="Add step (e.g. Toner)..." style="font-size:12px;padding:8px 11px;border:1px dashed #e8e0d4">
+      <button style="padding:8px 14px;border-radius:11px;border:none;background:#2d4a3e;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" data-addstep="${slotKey}">+ Add</button>
+    </div>`;
+}
+function renderSkin(){
+  const period=S.skinPeriod[S.selDate]||'am';
+  const skin=S.entry.skin;
+  const amDone=(['cleanse','moisturiser','sunscreen'].filter(k=>(skin.am||{})[k]).length+(skin.am?._custom||[]).filter(c=>(skin.am||{})[c.key]).length);
+  const pmDone=(['cleanse','moisturiser','exfoliate'].filter(k=>(skin.pm||{})[k]).length+(skin.pm?._custom||[]).filter(c=>(skin.pm||{})[c.key]).length);
+  return`
+    <div class="sec-hdr">✨ Skin Care</div>
+    <div class="ampm-toggle">
+      <button class="ampm-btn${period==='am'?' on':''}" data-period="am">☀️ Morning${amDone>0?`<span class="ampm-badge${period==='am'?' active':''}">${amDone}</span>`:''}</button>
+      <button class="ampm-btn${period==='pm'?' on':''}" data-period="pm">🌙 Evening${pmDone>0?`<span class="ampm-badge${period==='pm'?' active':''}">${pmDone}</span>`:''}</button>
+    </div>
+    <div class="lbl">${period==='am'?'Morning':'Evening'} steps</div>
+    ${renderSkinSlot(period)}
+    <div style="margin-top:20px">
+      <div class="lbl">Breakout today?</div>
+      <div style="display:flex;gap:10px">
+        <button class="brk-btn no${skin.breakout===false?' on':''}" data-brk="false">😊 No</button>
+        <button class="brk-btn yes${skin.breakout===true?' on':''}" data-brk="true">😟 Yes</button>
+      </div>
+    </div>`;
+}
+
+// ── GYM ───────────────────────────────────────────────────────────────────────
+function renderGym(){
+  const gym=S.entry.gym;
+  let h=`<div class="sec-hdr">💪 Gym</div>`;
+  gym.forEach((ex,i)=>{
+    h+=`<div class="gym-block">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="lbl">Exercise ${i+1}</div>
+        ${gym.length>1?`<button style="font-size:11px;color:#ef4444;border:none;background:none;cursor:pointer;font-family:inherit" data-remgym="${i}">Remove</button>`:''}
+      </div>
+      <div style="margin-bottom:10px">
+        <div class="lbl">Muscle Group</div>
+        <div class="chips">${MUSCLE.map(m=>`<button class="chip${ex.muscle===m?' on':''}" data-gi="${i}" data-gm="${m}">${m}</button>`).join('')}
+        </div>
+      </div>
+      <div style="margin-bottom:10px"><div class="lbl">Exercise Name</div><input class="inp" data-gi="${i}" data-gf="exercise" value="${esc(ex.exercise)}" placeholder="e.g. Bench Press"></div>
+      <div class="grid3" style="margin-bottom:10px">
+        <div><div class="lbl">Weight</div><input class="inp" type="number" data-gi="${i}" data-gf="weight" value="${ex.weight}" placeholder="kg"></div>
+        <div><div class="lbl">Reps</div><input class="inp" type="number" data-gi="${i}" data-gf="reps" value="${ex.reps}" placeholder="12"></div>
+        <div><div class="lbl">Sets</div><input class="inp" type="number" data-gi="${i}" data-gf="sets" value="${ex.sets}" placeholder="3"></div>
+      </div>
+      <div class="lbl">Note</div>
+      <input class="inp" data-gi="${i}" data-gf="note" value="${esc(ex.note)}" placeholder="Optional note">
+    </div>`;
+  });
+  h+=`<button style="width:100%;padding:13px;border:2px dashed #e8e0d4;border-radius:14px;background:transparent;color:#8a7968;font-size:13px;cursor:pointer;font-family:inherit" id="addGym">+ Add Exercise</button>`;
+  return h;
+}
+
+// ── SPEAKING ──────────────────────────────────────────────────────────────────
+function renderSpeak(){
+  const on=S.entry.speak;
+  return`<div style="text-align:center;padding-top:16px">
+    <div class="sec-hdr" style="justify-content:center">🗣️ Speaking Practice</div>
+    <div class="speak-wrap">
+      <button class="speak-btn${on?' done':''}" id="speakBtn">${on?'✓':'○'}</button>
+      <p style="margin-top:20px;color:${on?C.green:C.muted};font-size:15px;font-weight:500">${on?'Great work today! ✨':'Tap when done'}</p>
+    </div>
+  </div>`;
+}
+
+// ── TODOS ─────────────────────────────────────────────────────────────────────
+function renderTodos(){
+  const todos=S.entry.todos||[];
+  const done=todos.filter(t=>t.done).length;
+  let h=`<div class="sec-hdr">✅ To-Dos</div>`;
+  if(todos.length)h+=`<div style="font-size:12px;color:${C.muted};margin-bottom:14px">${done}/${todos.length} completed</div>`;
+  todos.forEach(todo=>{
+    const sd=todo.subs.filter(s=>s.done).length;
+    const open=todo._open;
+    h+=`<div class="todo-item${todo.done?' done':''}" data-tid="${todo.id}">
+      <div class="todo-row">
+        <button class="todo-check${todo.done?' done':''}" data-tog="${todo.id}">${todo.done?'✓':''}</button>
+        <span class="todo-text${todo.done?' done':''}">${esc(todo.text)}</span>
+        <button class="todo-exp" data-exp="${todo.id}">${todo.subs.length?`${sd}/${todo.subs.length} `:'sub '}${open?'▲':'▼'}</button>
+        <button class="todo-del" data-del="${todo.id}">×</button>
+      </div>`;
+    if(open){
+      h+=`<div class="todo-subs">`;
+      todo.subs.forEach(s=>{
+        h+=`<div class="sub-row">
+          <div class="sub-line"></div>
+          <button class="sub-check${s.done?' done':''}" data-stog="${todo.id},${s.id}">${s.done?'✓':''}</button>
+          <span class="sub-text${s.done?' done':''}">${esc(s.text)}</span>
+          <button class="todo-del" data-sdel="${todo.id},${s.id}">×</button>
+        </div>`;
+      });
+      h+=`<div style="display:flex;gap:7px;margin-top:8px;padding-left:22px">
+        <input class="inp" id="subInp_${todo.id}" placeholder="Add sub-task..." style="font-size:12px;padding:7px 10px;border:1px dashed #e8e0d4">
+        <button style="padding:7px 12px;border-radius:10px;border:none;background:#6aaa8a;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" data-addsub="${todo.id}">+</button>
+      </div></div>`;
+    }
+    h+=`</div>`;
+  });
+  h+=`<div class="add-row">
+    <input class="add-inp" id="todoInp" placeholder="Add a task...">
+    <button class="add-btn" id="addTodo">+</button>
+  </div>`;
+  return h;
+}
+
+// ── Attach events for current section ─────────────────────────────────────────
+function markDirty(){S.dirty=true;renderBotBtns();}
+
+function attachSection(){
+  const card=document.getElementById('secCard');
+
+  // Meditation
+  card.querySelector('#medTime')?.addEventListener('input',e=>{S.entry.meditation.time=e.target.value;markDirty();});
+  card.querySelector('#medLaps')?.addEventListener('input',e=>{S.entry.meditation.laps=e.target.value;markDirty();});
+  card.querySelector('#medNote')?.addEventListener('input',e=>{S.entry.meditation.note=e.target.value;markDirty();});
+  card.querySelectorAll('[data-mm]').forEach(b=>b.addEventListener('click',()=>{S.entry.meditation.method=b.dataset.mm;markDirty();renderSection();}));
+  card.querySelectorAll('[data-rv]').forEach(b=>b.addEventListener('click',()=>{S.entry.meditation.restlessness=+b.dataset.rv;markDirty();renderSection();}));
+
+  // Reading
+  card.querySelector('#readTitle')?.addEventListener('input',e=>{S.entry.read.title=e.target.value;markDirty();});
+  card.querySelector('#readNotes')?.addEventListener('input',e=>{S.entry.read.notes=e.target.value;markDirty();});
+
+  // Skin
+  card.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{S.skinPeriod[S.selDate]=b.dataset.period;renderSection();}));
+  card.querySelectorAll('[data-slot][data-sk]').forEach(b=>b.addEventListener('click',()=>{
+    const slot=b.dataset.slot,sk=b.dataset.sk;
+    if(!S.entry.skin[slot])S.entry.skin[slot]={_custom:[]};
+    S.entry.skin[slot][sk]=!S.entry.skin[slot][sk];markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-slot][data-rk]').forEach(b=>b.addEventListener('click',()=>{
+    const slot=b.dataset.slot,rk=b.dataset.rk;
+    const sl=S.entry.skin[slot];delete sl[rk];sl._custom=(sl._custom||[]).filter(c=>c.key!==rk);
+    markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-addstep]').forEach(b=>b.addEventListener('click',()=>{
+    const slot=b.dataset.addstep;
+    const inp=card.querySelector('#skinNewStep_'+slot);
+    const label=(inp?.value||'').trim();if(!label)return;
+    const key='c_'+label.toLowerCase().replace(/\s+/g,'_')+'_'+Date.now();
+    if(!S.entry.skin[slot])S.entry.skin[slot]={_custom:[]};
+    S.entry.skin[slot][key]=false;
+    (S.entry.skin[slot]._custom=S.entry.skin[slot]._custom||[]).push({key,label});
+    markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-brk]').forEach(b=>b.addEventListener('click',()=>{
+    S.entry.skin.breakout=b.dataset.brk==='true';markDirty();renderSection();
+  }));
+
+  // Gym
+  card.querySelector('#addGym')?.addEventListener('click',()=>{S.entry.gym.push(newGym());markDirty();renderSection();});
+  card.querySelectorAll('[data-remgym]').forEach(b=>b.addEventListener('click',()=>{
+    S.entry.gym.splice(+b.dataset.remgym,1);markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-gi][data-gm]').forEach(b=>b.addEventListener('click',()=>{
+    S.entry.gym[+b.dataset.gi].muscle=b.dataset.gm;markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-gi][data-gf]').forEach(inp=>inp.addEventListener('input',e=>{
+    S.entry.gym[+inp.dataset.gi][inp.dataset.gf]=e.target.value;markDirty();
+  }));
+
+  // Speaking
+  card.querySelector('#speakBtn')?.addEventListener('click',()=>{S.entry.speak=!S.entry.speak;markDirty();renderSection();});
+
+  // Todos
+  card.querySelector('#addTodo')?.addEventListener('click',()=>{
+    const inp=card.querySelector('#todoInp');const t=(inp?.value||'').trim();
+    if(!t)return;S.entry.todos.push({id:uid(),text:t,done:false,subs:[],_open:false});
+    markDirty();renderSection();
+  });
+  card.querySelector('#todoInp')?.addEventListener('keydown',e=>{if(e.key==='Enter'){card.querySelector('#addTodo')?.click();}});
+  card.querySelectorAll('[data-tog]').forEach(b=>b.addEventListener('click',()=>{
+    const td=S.entry.todos.find(t=>t.id===b.dataset.tog);if(td)td.done=!td.done;markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{
+    S.entry.todos=S.entry.todos.filter(t=>t.id!==b.dataset.del);markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-exp]').forEach(b=>b.addEventListener('click',()=>{
+    const td=S.entry.todos.find(t=>t.id===b.dataset.exp);if(td)td._open=!td._open;renderSection();
+  }));
+  card.querySelectorAll('[data-stog]').forEach(b=>b.addEventListener('click',()=>{
+    const[tid,sid]=b.dataset.stog.split(',');
+    const td=S.entry.todos.find(t=>t.id===tid);
+    const s=td?.subs.find(x=>x.id===sid);if(s)s.done=!s.done;markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-sdel]').forEach(b=>b.addEventListener('click',()=>{
+    const[tid,sid]=b.dataset.sdel.split(',');
+    const td=S.entry.todos.find(t=>t.id===tid);
+    if(td)td.subs=td.subs.filter(x=>x.id!==sid);markDirty();renderSection();
+  }));
+  card.querySelectorAll('[data-addsub]').forEach(b=>b.addEventListener('click',()=>{
+    const tid=b.dataset.addsub;
+    const inp=card.querySelector('#subInp_'+tid);
+    const t=(inp?.value||'').trim();if(!t)return;
+    const td=S.entry.todos.find(x=>x.id===tid);
+    if(td)td.subs.push({id:uid(),text:t,done:false});
+    markDirty();renderSection();
+  }));
+  card.querySelectorAll('[id^="subInp_"]').forEach(inp=>inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){const tid=inp.id.replace('subInp_','');card.querySelector(`[data-addsub="${tid}"]`)?.click();}
+  }));
+}
+
+// ── STREAKS ───────────────────────────────────────────────────────────────────
+function renderStreaks(){
+  const el=document.getElementById('streaksContent');
+  if(!Object.keys(S.all).length){
+    el.innerHTML=`<div style="text-align:center;padding-top:60px;color:${C.muted}"><div style="font-size:48px;margin-bottom:12px">🔥</div><div style="font-size:14px">Log your first day to start streaks!</div></div>`;
+    return;
+  }
+  let h=`<div style="font-size:12px;color:${C.muted};margin-bottom:14px">Last 14 days · filled = completed</div>`;
+  HABITS.forEach(hab=>{
+    const s=calcStreak(hab.key);
+    const dots=Array.from({length:14},(_,i)=>{const e=S.all[daysAgo(13-i)];return e&&hab.check(e);});
+    const bar=dots.map(d=>`<div style="flex:1;height:8px;border-radius:4px;background:${d?C.mint:'#ede9e3'}"></div>`).join('');
+    h+=`<div class="streak-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px">${hab.icon}</span><span style="font-weight:600">${hab.label}</span></div>
+        <div style="display:flex;align-items:baseline;gap:4px">
+          <span style="font-size:30px;font-weight:700;color:${C.green}">${s}</span>
+          <span style="font-size:11px;color:${C.muted}">day${s!==1?'s':''}</span>
+          <span style="font-size:18px;margin-left:4px">${s>=7?'🔥':s>=3?'⚡':'○'}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:4px">${bar}</div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px">
+        <span style="font-size:9px;color:#c4b9ac">14d ago</span>
+        <span style="font-size:9px;color:#c4b9ac">today</span>
+      </div>
+    </div>`;
+  });
+  el.innerHTML=h;
+}
+
+// ── INSIGHTS ──────────────────────────────────────────────────────────────────
+function renderInsights(){
+  const el=document.getElementById('insightsContent');
+  const dates=Object.keys(S.all);
+  if(!dates.length){
+    el.innerHTML=`<div style="text-align:center;padding-top:60px;color:${C.muted}"><div style="font-size:48px;margin-bottom:12px">📊</div><div style="font-size:14px">Start logging to see insights!</div></div>`;
+    return;
+  }
+  const total=dates.length;
+  const avg=(dates.reduce((s,d)=>s+HABITS.filter(h=>h.check(S.all[d])).length,0)/total).toFixed(1);
+  const best=Math.max(0,...HABITS.map(h=>calcStreak(h.key)));
+  const l14=Array.from({length:14},(_,i)=>{
+    const date=daysAgo(13-i);const e=S.all[date];
+    return{date:shortD(date),score:e?HABITS.filter(h=>h.check(e)).length:0,med:e?(parseFloat(e.meditation?.time)||0):0};
+  });
+  // SVG bar chart
+  const BH=70,BW=100,n=14,slotW=BW/n;
+  const barSvg=`<svg viewBox="0 0 ${BW} ${BH+18}" width="100%" height="${BH+18}" preserveAspectRatio="none">
+    ${l14.map((d,i)=>{
+      const hh=Math.max(d.score/5*BH,1);const x=i*slotW+slotW*.15;const bw=slotW*.7;
+      const fill=d.score>=4?C.green:d.score>=2?C.mint:'#e8e0d4';
+      return`<rect x="${x}" y="${BH-hh}" width="${bw}" height="${hh}" rx="2" fill="${fill}"/>
+             <text x="${i*slotW+slotW/2}" y="${BH+14}" text-anchor="middle" font-size="4" fill="#8a7968">${d.date}</text>`;
+    }).join('')}
+  </svg>`;
+  // SVG line chart
+  const medMax=Math.max(...l14.map(d=>d.med),1);
+  const pts=l14.map((d,i)=>`${i*(BW/(n-1))},${BH-(d.med/medMax*BH)}`).join(' ');
+  const lineSvg=`<svg viewBox="0 0 ${BW} ${BH+18}" width="100%" height="${BH+18}" preserveAspectRatio="none">
+    <polyline points="${pts}" fill="none" stroke="${C.orange}" stroke-width="1.5" stroke-linejoin="round"/>
+    ${l14.map((d,i)=>{const x=i*(BW/(n-1));const y=BH-(d.med/medMax*BH);return`<circle cx="${x}" cy="${y}" r="2" fill="${C.orange}"/><text x="${x}" y="${BH+14}" text-anchor="middle" font-size="4" fill="#8a7968">${d.date}</text>`;}).join('')}
+  </svg>`;
+  // Skin stats
+  const skinK=['moisturiser','cleanse','sunscreen','exfoliate'];
+  const skinNames={moisturiser:'Moisturise',cleanse:'Cleanse',sunscreen:'Sunscreen',exfoliate:'Exfoliate'};
+  const skinBars=skinK.map(k=>{
+    const pct=Math.round(dates.filter(d=>S.all[d]?.skin?.am?.[k]||S.all[d]?.skin?.pm?.[k]).length/total*100);
+    const bg=pct>=70?C.mint:pct>=40?C.tan:C.orange;
+    return`<div style="margin-bottom:11px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>${skinNames[k]}</span><span style="color:${C.muted}">${pct}%</span></div>
+      <div style="height:8px;background:#ede9e3;border-radius:4px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${bg};border-radius:4px"></div></div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val">${total}</div><div class="stat-lbl">Days</div></div>
+      <div class="stat-card"><div class="stat-val">${avg}</div><div class="stat-lbl">Avg/day</div></div>
+      <div class="stat-card"><div class="stat-val">${best}</div><div class="stat-lbl">Best streak</div></div>
+    </div>
+    <div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:10px">Habits completed (last 14 days)</div>${barSvg}</div>
+    <div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:10px">Meditation minutes (last 14 days)</div>${lineSvg}</div>
+    <div class="chart-card"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Skin care consistency</div>${skinBars}</div>
+    <div class="ai-card">
+      <div class="ai-title">🤖 AI Insight Analysis</div>
+      <div class="ai-sub">Claude reads your last 14 days and gives you a personal written analysis — patterns, wins, and what to focus on.</div>
+      <div id="aiKeySection">
+        <div style="font-size:11px;opacity:.7;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Anthropic API Key</div>
+        <div class="ai-key-row">
+          <input class="ai-key-inp" type="password" id="apiKeyInp" placeholder="sk-ant-...">
+          <button class="ai-key-save" id="saveApiKey">Save</button>
+        </div>
+        <div style="font-size:11px;opacity:.6;line-height:1.5;margin-bottom:12px">Get a free key at console.anthropic.com · stored only on your device</div>
+      </div>
+      <button class="ai-btn" id="aiAnalyzeBtn">✨ Analyse my ritual</button>
+      <div id="aiOutput"></div>
+    </div>`;
+  setTimeout(attachAiCard,0);
+}
+
+// ── AI ANALYSIS ──────────────────────────────────────────────────────────────
+function attachAiCard(){
+  const keyInp=document.getElementById('apiKeyInp');
+  const keySection=document.getElementById('aiKeySection');
+  const saved=ls.get('ritual:apikey')||'';
+  if(saved&&keySection)keySection.style.display='none';
+  if(keyInp)keyInp.value='';
+
+  document.getElementById('saveApiKey')?.addEventListener('click',()=>{
+    const k=(keyInp?.value||'').trim();
+    if(!k)return;
+    ls.set('ritual:apikey',k);
+    if(keySection)keySection.style.display='none';
+    showToast('API key saved 🔑');
+  });
+
+  document.getElementById('aiAnalyzeBtn')?.addEventListener('click',runAiAnalysis);
+}
+
+async function runAiAnalysis(){
+  const apiKey=ls.get('ritual:apikey');
+  if(!apiKey){
+    const ks=document.getElementById('aiKeySection');
+    if(ks)ks.style.display='block';
+    document.getElementById('apiKeyInp')?.focus();
+    return;
+  }
+  const btn=document.getElementById('aiAnalyzeBtn');
+  const out=document.getElementById('aiOutput');
+  btn.disabled=true;btn.textContent='Analysing...';
+  out.innerHTML='<div class="ai-loading"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Reading your data...</span></div>';
+
+  // Build data summary for last 14 days
+  const lines=[];
+  for(let i=13;i>=0;i--){
+    const date=daysAgo(i);
+    const e=S.all[date];
+    if(!e){lines.push(`${date}: no entry`);continue;}
+    const parts=[];
+    if(parseFloat(e.meditation?.time)>0)parts.push(`meditation ${e.meditation.time}min (restlessness ${e.meditation.restlessness||0}/10, method: ${e.meditation.method||'unset'})`);
+    if((e.read?.title||e.read?.notes||'').trim())parts.push(`reading: "${(e.read?.title||'').trim()||'untitled'}"`);
+    const amDone=Object.entries(e.skin?.am||{}).filter(([k,v])=>k!=='_custom'&&v===true).map(([k])=>k);
+    const pmDone=Object.entries(e.skin?.pm||{}).filter(([k,v])=>k!=='_custom'&&v===true).map(([k])=>k);
+    if(amDone.length||pmDone.length)parts.push(`skin: AM[${amDone.join(',')||'none'}] PM[${pmDone.join(',')||'none'}]${e.skin?.breakout?' BREAKOUT':''}`);
+    if(e.gym?.some(g=>g.exercise?.trim()))parts.push(`gym: ${e.gym.filter(g=>g.exercise?.trim()).map(g=>`${g.muscle||'?'} - ${g.exercise}`).join('; ')}`);
+    if(e.speak)parts.push('speaking practice ✓');
+    const todoDone=(e.todos||[]).filter(t=>t.done).length;
+    const todoTotal=(e.todos||[]).length;
+    if(todoTotal>0)parts.push(`todos: ${todoDone}/${todoTotal} done`);
+    lines.push(`${date}: ${parts.length?parts.join(' | '):'logged but empty'}`);
+  }
+
+  const prompt=`You are a supportive personal development coach analysing someone's daily ritual journal.
+
+Here is their logged data for the last 14 days:
+
+${lines.join('\n')}
+
+Write a warm, personal, insightful analysis (around 200-250 words). Cover:
+1. **Overall consistency** — how well are they showing up across all habits
+2. **Strongest habit** — what they're nailing
+3. **Needs attention** — the habit most at risk or skipped
+4. **Meditation quality** — comment on their restlessness trend if data exists
+5. **One specific actionable tip** for the coming week
+
+Be direct, encouraging, and specific. Use their actual data. Do not use bullet points — write in flowing paragraphs. Address them as "you".`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:600,stream:true,
+        messages:[{role:'user',content:prompt}]})
+    });
+
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      throw new Error(err?.error?.message||'API error '+res.status);
+    }
+
+    out.innerHTML='<div class="ai-result" id="aiText"></div>';
+    const textEl=document.getElementById('aiText');
+    const reader=res.body.getReader();
+    const decoder=new TextDecoder();
+    let full='';
+
+    while(true){
+      const{done,value}=await reader.read();
+      if(done)break;
+      const chunk=decoder.decode(value,{stream:true});
+      const lines2=chunk.split('\n');
+      for(const line of lines2){
+        if(!line.startsWith('data: '))continue;
+        const data=line.slice(6).trim();
+        if(data==='[DONE]')continue;
+        try{
+          const j=JSON.parse(data);
+          if(j.type==='content_block_delta'&&j.delta?.text){
+            full+=j.delta.text;
+            textEl.textContent=full;
+          }
+        }catch{}
+      }
+    }
+    // Bold the section headers
+    textEl.innerHTML=full.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  }catch(err){
+    out.innerHTML=`<div style="margin-top:12px;font-size:12px;opacity:.8;line-height:1.6">⚠️ ${err.message}<br><br>Check your API key in the input above or visit console.anthropic.com to get one.</div>`;
+    const ks=document.getElementById('aiKeySection');
+    if(ks)ks.style.display='block';
+  }finally{
+    btn.disabled=false;btn.textContent='✨ Analyse again';
+  }
+}
+
+// ── REMINDERS ─────────────────────────────────────────────────────────────────
+function renderReminders(){
+  const el=document.getElementById('remindersContent');
+  const perm=typeof Notification!=='undefined'?Notification.permission:'default';
+  const gClientId=ls.get('ritual:gclientid')||'';
+  const gSynced=ls.get('ritual:glastsync')||'';
+
+  let h='<div style="font-size:18px;font-weight:700;font-family:Georgia,serif;margin-bottom:4px">🔔 Reminders</div>';
+  h+=`<div style="font-size:12px;color:#8a7968;margin-bottom:16px">Daily push reminders for each section</div>`;
+  if(perm!=='granted'){
+    h+=`<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:16px;margin-bottom:16px;text-align:center">
+      <div style="font-size:24px;margin-bottom:6px">🔔</div>
+      <div style="font-size:13px;color:#92400e;margin-bottom:10px">Allow notifications to receive reminders</div>
+      <button id="allowNotif" style="padding:9px 22px;border-radius:12px;border:none;background:#e07b5a;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Allow Notifications</button>
+    </div>`;
+  }
+  REMS.forEach(s=>{
+    const r=S.reminders[s.key]||{enabled:false,time:'08:00'};
+    h+=`<div class="rem-row">
+      <span style="font-size:22px">${s.icon}</span>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:14px">${s.label}</div>
+        ${r.enabled?`<input type="time" value="${r.time}" data-remtime="${s.key}" style="margin-top:6px;padding:4px 8px;border-radius:8px;border:1px solid #e8e0d4;font-size:13px;background:#faf6f0;outline:none;font-family:inherit">`:''}
+      </div>
+      <button class="toggle" data-remtog="${s.key}" style="background:${r.enabled?'#2d4a3e':'#e2e8f0'}">
+        <div class="toggle-knob" style="left:${r.enabled?22:3}px"></div>
+      </button>
+    </div>`;
+  });
+
+  // ── Data & Backup box ──
+  h+=`<div class="data-box" style="margin-top:8px">
+    <div style="font-size:14px;font-weight:700;margin-bottom:4px">💾 Data & Backup</div>
+    <div style="font-size:12px;color:#8a7968;margin-bottom:14px;line-height:1.6">Your data lives on this device in local storage. Export a copy, import a backup, or sync to Google Drive.</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button id="exportBtn" style="flex:1;padding:11px;border-radius:12px;border:1px solid #e8e0d4;background:white;color:#2d4a3e;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">⬇️ Export JSON</button>
+      <button id="importBtn" style="flex:1;padding:11px;border-radius:12px;border:1px solid #e8e0d4;background:white;color:#2d4a3e;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">⬆️ Import JSON</button>
+      <input type="file" id="importFile" accept=".json" style="display:none">
+    </div>
+  </div>`;
+
+  // ── Google Drive Sync box ──
+  h+=`<div class="data-box" style="margin-top:10px;background:linear-gradient(135deg,#e8f5e9,#f0f7f2)">
+    <div style="font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px">
+      <svg width="18" height="18" viewBox="0 0 87.3 78" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="M43.65 25L29.9 1.2C28.55 2 27.4 3.1 26.6 4.5L1.2 48.4C.4 49.8 0 51.35 0 52.9h27.5z" fill="#00ac47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.85 11.5z" fill="#ea4335"/><path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.9 0H34.4c-1.6 0-3.1.45-4.5 1.2z" fill="#00832d"/><path d="M59.8 52.9h27.5c0-1.55-.4-3.1-1.2-4.5L60.7 4.5C59.9 3.1 58.75 2 57.4 1.2L43.65 25z" fill="#2684fc"/><path d="M43.65 25L29.9 48.4l-2.4 4.5h32.3z" fill="#00ac47"/><path d="M27.5 52.9L13.75 76.7c1.35.8 2.9 1.3 4.5 1.3h50.8c1.6 0 3.1-.45 4.5-1.2L59.8 52.9z" fill="#0066da"/></svg>
+      Google Drive Sync
+    </div>
+    <div style="font-size:12px;color:#8a7968;margin-bottom:14px;line-height:1.6">Saves your data automatically to your Google Drive so it's safe and accessible across devices.</div>`;
+
+  if(!gClientId){
+    h+=`<div style="background:white;border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid #e8e0d4">
+      <div style="font-size:12px;font-weight:600;color:#1e1408;margin-bottom:6px">Setup (one time, 3 min)</div>
+      <div style="font-size:11px;color:#8a7968;line-height:1.7;margin-bottom:10px">
+        1. Go to <b>console.cloud.google.com</b><br>
+        2. Create a project → Enable <b>Google Drive API</b><br>
+        3. Go to <b>APIs & Services → Credentials</b><br>
+        4. Create <b>OAuth 2.0 Client ID</b> → Web application<br>
+        5. Add your file URL to <b>Authorised JavaScript origins</b><br>
+        6. Copy the Client ID and paste below
+      </div>
+      <input id="gClientIdInp" style="width:100%;padding:9px 12px;border-radius:10px;border:1px solid #e8e0d4;font-size:12px;outline:none;margin-bottom:8px;font-family:inherit" placeholder="Paste Google OAuth Client ID here...">
+      <button id="saveGClientId" style="width:100%;padding:10px;border-radius:10px;border:none;background:#2d4a3e;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Save Client ID</button>
+    </div>`;
+  } else {
+    const status=gSynced?`Last synced: ${new Date(gSynced).toLocaleString()}`:'Not synced yet';
+    h+=`<div style="font-size:11px;color:#8a7968;margin-bottom:10px">${status}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button id="gdriveSyncBtn" style="flex:1;padding:11px;border-radius:12px;border:none;background:#2d4a3e;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;min-width:120px">☁️ Sync to Drive</button>
+      <button id="gdriveRestoreBtn" style="flex:1;padding:11px;border-radius:12px;border:1px solid #e8e0d4;background:white;color:#2d4a3e;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;min-width:120px">⬇️ Restore from Drive</button>
+    </div>
+    <button id="clearGClientId" style="width:100%;margin-top:8px;padding:8px;border-radius:10px;border:1px solid #e8e0d4;background:transparent;color:#8a7968;font-size:11px;cursor:pointer;font-family:inherit">Disconnect Google account</button>`;
+  }
+  h+=`</div>`;
+
+  // ── Address bar notice ──
+  h+=`<div style="background:#fef9c3;border:1px solid #fde68a;border-radius:14px;padding:14px;margin-top:10px">
+    <div style="font-size:13px;font-weight:600;color:#92400e;margin-bottom:6px">📱 Hide the address bar</div>
+    <div style="font-size:12px;color:#92400e;line-height:1.7">
+      To open this app fullscreen without Chrome's address bar:<br>
+      <b>1.</b> Host the file for free on <b>netlify.com/drop</b> (drag &amp; drop, takes 30 seconds)<br>
+      <b>2.</b> Open that URL in Chrome on your phone<br>
+      <b>3.</b> Tap <b>⋮ → Add to Home Screen</b><br>
+      From then on it opens like a real app with no browser chrome.
+    </div>
+  </div>`;
+
+  el.innerHTML=h;
+
+  // ── Attach events ──
+  document.getElementById('allowNotif')?.addEventListener('click',async()=>{await Notification.requestPermission();renderReminders();});
+  el.querySelectorAll('[data-remtog]').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.remtog;
+    S.reminders[k]={time:S.reminders[k]?.time||'08:00',enabled:!S.reminders[k]?.enabled};
+    ls.set('ritual:reminders',S.reminders);scheduleNotifs();renderReminders();
+  }));
+  el.querySelectorAll('[data-remtime]').forEach(inp=>inp.addEventListener('change',()=>{
+    const k=inp.dataset.remtime;
+    if(!S.reminders[k])S.reminders[k]={enabled:true};
+    S.reminders[k].time=inp.value;
+    ls.set('ritual:reminders',S.reminders);scheduleNotifs();
+  }));
+
+  // Export
+  document.getElementById('exportBtn')?.addEventListener('click',exportData);
+
+  // Import
+  document.getElementById('importBtn')?.addEventListener('click',()=>document.getElementById('importFile')?.click());
+  document.getElementById('importFile')?.addEventListener('change',e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const parsed=JSON.parse(ev.target.result);
+        const entries=parsed.entries||parsed;
+        if(typeof entries!=='object'||Array.isArray(entries))throw new Error('Invalid format');
+        const dates=Object.keys(entries);
+        dates.forEach(d=>{ls.set('ritual:'+d,entries[d]);});
+        const existing=ls.get('ritual:index')||[];
+        const merged=[...new Set([...existing,...dates])].sort();
+        ls.set('ritual:index',merged);
+        // Reload state
+        const all={};merged.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
+        S.all=all;
+        if(all[S.selDate])S.entry=JSON.parse(JSON.stringify(all[S.selDate]));
+        renderProgBar();showToast(`Imported ${dates.length} days ✅`);
+      }catch(err){showToast('Import failed: '+err.message);}
+    };
+    reader.readAsText(file);
+  });
+
+  // Google Drive setup
+  document.getElementById('saveGClientId')?.addEventListener('click',()=>{
+    const v=(document.getElementById('gClientIdInp')?.value||'').trim();
+    if(!v)return;
+    ls.set('ritual:gclientid',v);showToast('Client ID saved!');renderReminders();
+  });
+  document.getElementById('clearGClientId')?.addEventListener('click',()=>{
+    ls.set('ritual:gclientid','');ls.set('ritual:gfileid','');ls.set('ritual:glastsync','');
+    S.gToken=null;renderReminders();
+  });
+  document.getElementById('gdriveSyncBtn')?.addEventListener('click',gdrivePush);
+  document.getElementById('gdriveRestoreBtn')?.addEventListener('click',gdrivePull);
+}
+
+// ── Export helper ──────────────────────────────────────────────────────────────
+function exportData(){
+  const dates=ls.get('ritual:index')||[];
+  const all={};dates.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
+  const blob=new Blob([JSON.stringify({entries:all,exported:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='ritual-backup-'+TODAY+'.json';a.click();
+}
+
+// ── Google Drive ──────────────────────────────────────────────────────────────
+function loadGIS(cb){
+  if(window.google?.accounts){cb();return;}
+  const s=document.createElement('script');
+  s.src='https://accounts.google.com/gsi/client';
+  s.onload=cb;s.onerror=()=>showToast('Failed to load Google Sign-In — check internet');
+  document.head.appendChild(s);
+}
+
+function getGToken(cb){
+  const clientId=ls.get('ritual:gclientid');
+  if(!clientId){showToast('Enter your Google Client ID first');return;}
+  loadGIS(()=>{
+    try{
+      const client=google.accounts.oauth2.initTokenClient({
+        client_id:clientId,
+        scope:'https://www.googleapis.com/auth/drive.appdata',
+        callback:resp=>{
+          if(resp.access_token){S.gToken=resp.access_token;cb(resp.access_token);}
+          else showToast('Google sign-in failed');
+        }
+      });
+      client.requestAccessToken();
+    }catch(e){showToast('Google error: '+e.message);}
+  });
+}
+
+async function gdriveGetFileId(token){
+  // Look for existing backup file
+  const stored=ls.get('ritual:gfileid');
+  if(stored)return stored;
+  const r=await fetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D'daily-ritual-data.json'",
+    {headers:{Authorization:'Bearer '+token}});
+  const j=await r.json();
+  if(j.files&&j.files.length>0){
+    ls.set('ritual:gfileid',j.files[0].id);return j.files[0].id;
+  }
+  return null;
+}
+
+async function gdrivePush(){
+  showToast('Connecting to Google Drive...');
+  getGToken(async token=>{
+    try{
+      const dates=ls.get('ritual:index')||[];
+      const all={};dates.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
+      const body=JSON.stringify({entries:all,saved:new Date().toISOString()});
+      const fileId=await gdriveGetFileId(token);
+      let res;
+      if(fileId){
+        // Update existing
+        res=await fetch('https://www.googleapis.com/upload/drive/v3/files/'+fileId+'?uploadType=media',
+          {method:'PATCH',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body});
+      }else{
+        // Create new in appDataFolder
+        const meta={name:'daily-ritual-data.json',parents:['appDataFolder']};
+        const form=new FormData();
+        form.append('metadata',new Blob([JSON.stringify(meta)],{type:'application/json'}));
+        form.append('file',new Blob([body],{type:'application/json'}));
+        res=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
+          {method:'POST',headers:{Authorization:'Bearer '+token},body:form});
+        const nj=await res.json();
+        if(nj.id)ls.set('ritual:gfileid',nj.id);
+      }
+      if(res.ok){
+        const now=new Date().toISOString();ls.set('ritual:glastsync',now);
+        showToast('Synced to Google Drive ☁️✅');renderReminders();
+      }else{
+        const ej=await res.json().catch(()=>({}));
+        showToast('Drive error: '+(ej?.error?.message||res.status));
+      }
+    }catch(e){showToast('Sync failed: '+e.message);}
+  });
+}
+
+async function gdrivePull(){
+  showToast('Fetching from Google Drive...');
+  getGToken(async token=>{
+    try{
+      const fileId=await gdriveGetFileId(token);
+      if(!fileId){showToast('No backup found in Drive');return;}
+      const res=await fetch('https://www.googleapis.com/drive/v3/files/'+fileId+'?alt=media',
+        {headers:{Authorization:'Bearer '+token}});
+      if(!res.ok){showToast('Could not read Drive file');return;}
+      const parsed=await res.json();
+      const entries=parsed.entries||parsed;
+      const dates=Object.keys(entries);
+      dates.forEach(d=>ls.set('ritual:'+d,entries[d]));
+      const existing=ls.get('ritual:index')||[];
+      const merged=[...new Set([...existing,...dates])].sort();
+      ls.set('ritual:index',merged);
+      const all={};merged.forEach(d=>{const e=ls.get('ritual:'+d);if(e)all[d]=e;});
+      S.all=all;
+      if(all[S.selDate])S.entry=JSON.parse(JSON.stringify(all[S.selDate]));
+      renderProgBar();showToast('Restored '+dates.length+' days from Drive ✅');
+    }catch(e){showToast('Restore failed: '+e.message);}
+  });
+}
+
+// ── Notifications ─────────────────────────────────────────────────────────────
+function scheduleNotifs(){
+  S.timers.forEach(clearTimeout);S.timers=[];
+  if(typeof Notification==='undefined'||Notification.permission!=='granted')return;
+  Object.entries(S.reminders).forEach(([k,r])=>{
+    if(!r?.enabled||!r?.time)return;
+    const[hh,mm]=r.time.split(':').map(Number);
+    const now=new Date(),fire=new Date();
+    fire.setHours(hh,mm,0,0);if(fire<=now)fire.setDate(fire.getDate()+1);
+    const sec=REMS.find(x=>x.key===k);
+    S.timers.push(setTimeout(()=>{
+      try{new Notification('Daily Ritual · '+(sec?.label||k),{body:'Time for your '+(sec?.label||k)+'!'});}catch{}
+    },fire-now));
+  });
+}
+
+// ── Date navigation ───────────────────────────────────────────────────────────
+function changeDate(newDate){
+  if(newDate>TODAY)return;
+  S.selDate=newDate;
+  S.entry=S.all[newDate]?JSON.parse(JSON.stringify(S.all[newDate])):newEntry();
+  S.dirty=false;S.sec=0;
+  renderHeader();renderProgBar();renderSecTabs();renderSection();renderBotBtns();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+function init(){
+  loadAll();
+  renderHeader();
+  renderProgBar();
+  renderSecTabs();
+  renderSection();
+  renderBotBtns();
+  scheduleNotifs();
+
+  // Nav buttons
+  document.getElementById('navPrev').addEventListener('click',()=>{
+    const d=new Date(S.selDate+'T12:00:00');d.setDate(d.getDate()-1);changeDate(toDS(d));
+  });
+  document.getElementById('navNext').addEventListener('click',()=>{
+    const d=new Date(S.selDate+'T12:00:00');d.setDate(d.getDate()+1);changeDate(toDS(d));
+  });
+  document.getElementById('todayBtn').addEventListener('click',()=>changeDate(TODAY));
+  document.getElementById('datePicker').addEventListener('change',e=>{
+    if(e.target.value)changeDate(e.target.value);
+  });
+
+  // Bottom nav
+  document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
